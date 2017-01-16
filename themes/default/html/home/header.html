@@ -1,0 +1,78 @@
+<!--{include home/html_header}-->
+<div class="header">
+    <div class="title"><a href="${WEB_ROOT}/">{$INI['system']['sitename']}</a></div>
+    <div class="quick-menu fr"><ul class="nav nav-pills">
+
+            <li><a class="nav_b" href="${WEB_ROOT}/home/user_message"><i class="icon-bell-alt icon-2x"></i><span class="notice-text">{$login_user['message_num']}</span></a></li>
+            <li class="dropdown dropdown-menu-toggle eteams-quick nav_b"><a class="dropdown-toggle"><i class="icon-user icon-2x"></i><span class="user-text">您好，{$login_user[username]}!</span> <i class="triangle"></i></a>
+                <ul class="dropdown-menu dropdown-menu-right border-dropdown"><li><a href="${WEB_ROOT}/">返回首页</a></li>
+                    <!--{if checkperm('system',false)}-->
+                    <li><a href="${WEB_ROOT}/admin">超管中心</a></li>
+                    <!--{/if}-->
+                    <li><a href="${WEB_ROOT}/account/logout">退出系统</a></li></ul></li></ul>
+
+    </div>
+</div>
+<div class="maincontainer ${$_COOKIE['aside']=='leftmin'?'leftmin min':''}">
+    <div class="aside">
+        <ul id="accordion" class="accordion">
+            <li class="${$nav['nav1']=='user'?'open':''}">
+                <div class="link">账号信息<i class="icon-chevron-down"></i></div>
+                <ul class="submenu ${$nav['nav1']=='user'?'block':''}" >
+                    <li class="${$nav['nav2']=='register'?'hover':''}"><a href="${WEB_ROOT}/home/user_register"><span class="circle"></span>注册信息</a></li>
+                    <!--                    <li class="${$nav['nav2']=='invoice'?'hover':''}"><a href="${WEB_ROOT}/home/user_invoice"><span class="circle"></span>开票信息</a></li>-->
+
+                    <li class="${$nav['nav2']=='password'?'hover':''}"><a href="${WEB_ROOT}/home/user_password"><span class="circle"></span>修改密码</a></li>
+                    <li class="${$nav['nav2']=='message'?'hover':''}"><a href="${WEB_ROOT}/home/user_message"><span class="circle"></span>公告消息</a></li>
+                </ul>
+            </li>
+
+            <li class="${$nav['nav1']=='business'?'open':''}">
+                <div class="link">业务中心<i class="icon-chevron-down"></i></div>
+                <ul class="submenu ${$nav['nav1']=='business'?'block':''}">
+
+
+                    <li class="${$nav['nav2']=='bed'?'hover':''}"><a href="${WEB_ROOT}/home/business_bed"><span class="circle"></span>床位管理</a></li>
+
+
+
+                </ul>
+            </li>
+            <!--{if checkperm(array('notice','user','version','service'),false)}-->
+            <li class="${$nav['nav1']=='setting'?'open':''}">
+                <div class="link">管理中心<i class="icon-chevron-down"></i></div>
+                <ul class="submenu ${$nav['nav1']=='setting'?'block':''}">
+                    <!--{if checkperm('notice',false)}-->
+                    <li class="${$nav['nav2']=='notice'?'hover':''}"><a href="${WEB_ROOT}/home/setting_notice_select"><span class="circle"></span>公告管理</a></li>
+                    <!--{if}-->
+                    <!--{if checkperm('user',false)}-->
+                    <li class="${$nav['nav2']=='user'?'hover':''}"><a href="${WEB_ROOT}/home/setting_user_select"><span class="circle"></span>用户管理</a></li>
+                    <!--{if}-->
+
+
+                </ul>
+            </li>
+            <!--{/if}-->
+            <!--{if checkperm('auth',false)}-->
+            <li class="${$nav['nav1']=='auth'?'open':''}">
+                <div class="link">授权中心<i class="icon-chevron-down"></i></div>
+                <ul class="submenu ${$nav['nav1']=='auth'?'block':''}">
+                    <li class="${$nav['nav2']=='permission'?'hover':''}"><a href="${WEB_ROOT}/home/auth_permission_select"><span class="circle"></span>权限管理</a></li>
+                    <li class="${$nav['nav2']=='role'?'hover':''}"><a href="${WEB_ROOT}/home/auth_role_select"><span class="circle"></span>角色管理</a></li>
+                    <li class="${$nav['nav2']=='assignment'?'hover':''}"><a href="${WEB_ROOT}/home/auth_assignment_select"><span class="circle"></span>授权管理</a></li>
+
+                </ul>
+            </li>
+            <!--{/if}-->
+
+
+
+
+        </ul>
+        <div class="support"><a href="http://www.ewangtong.com" target="_blank">e网通</a> 技术支持
+            <!--{if $INI['system']['forum_statcode']!=""}-->
+            <div style="display: none;">{$INI['system']['forum_statcode']}</div>
+            <!--{/if}--></div></div>
+    <div class="dislpayarrow"><a class="pngfix" href="javascript:void(0);"><i class="${$_COOKIE['aside']=='leftmin'?'icon-caret-right':'icon-caret-left'} icon-2x"></i></a></div>
+    <div class="main">
+        <div class="main-hd">{$nav['title']}</div>

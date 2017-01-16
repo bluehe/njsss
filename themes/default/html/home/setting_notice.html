@@ -1,0 +1,92 @@
+<!--{include home/header}-->
+<div class="main-bd" >
+    <div class="main-content" style="padding: 20px 0">
+        <!--{if $message}-->
+        <div class="order-list order_info left">
+            <label>发布范围：</label>
+
+            <span>{$message['recode']}</span>
+
+        </div>
+        <div class="order-list order_info left">
+            <label>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+            <span>{$message['title']}</span>
+        </div>
+        <div class="order-list left"><label class="left" style="padding: 12px 0 12px 30px;">公告内容：</label><div style="margin:12px 30px 0 131px;">{$message[content]}</div></div>
+        <div class="clear order-list">
+            <div class="submitorder">
+                <a class="save btn btn-primary" href="{$back_url}">关&nbsp;&nbsp;&nbsp;&nbsp;闭</a>
+            </div>
+        </div>
+        <!--{else}-->
+        <form method="post" action="${WEB_ROOT}/home/setting_notice">
+            <input type="hidden" name="form_type" value="setting_notice" />
+            <input type="hidden" name="id" value="{$message[id]}" />
+            <div class="order-list order_info left">
+                <label class="left"><b class="red">*</b>发布范围：</label>
+                <div class="order-input">
+                    <label class="order_radio">
+                        <input type="checkbox" name="recode[]" value="系统公告" ${$recode&&!in_array('系统公告',$recode)?'':'checked'} />
+                        系统公告</label>
+                    <label class="order_radio">
+                        <input type="checkbox" name="recode[]" value="所有用户" ${$recode&&!in_array('所有用户',$recode)?'':'checked'} />
+                        所有用户</label>
+
+                </div>
+            </div>
+            <div class="order-list order_info left">
+                <label class="left"><b class="red">*</b>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+                <div class="order-input">
+                    <input type="text" class="hover" name="message[title]" value="{$message[title]}" />
+                </div>
+            </div>
+            <div class="order-list order_info left"><label class="left"><b class="red">*</b>公告内容：</label><div style="margin:12px 30px 0 131px;"><textarea name="message[content]" id="container">{$message[content]}</textarea></div></div>
+            <div class="clear order-list">
+                <div class="submitorder">
+                    <button type="submit" class="save btn btn-primary">发&nbsp;&nbsp;&nbsp;&nbsp;布</button>
+                </div>
+            </div>
+        </form>
+        <!--{/if}-->
+    </div>
+</div>
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.all.min.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+            var ue = UE.getEditor('container');
+            ue.addListener("contentChange", function(){
+
+            $(".main-bd").getNiceScroll().resize();
+            });</script>
+<script type="text/javascript">
+
+            $('form').on('submit', function(event) {
+    event.preventDefault();
+            if (!confirm("确认提交？")) {
+    return false;
+    }
+
+    $.ajax({
+    type: "POST",
+            url: WEB_ROOT + "/home/doform",
+            data: $(this).serialize(),
+            async: false,
+            success: function(data) {
+
+            var ss = data.split("|");
+                    if (ss[0] == 'error') {
+            toastr.error(ss[1]);
+            } else if (ss[0] == 'success') {
+            toastr.success(ss[1]);
+            } else if (ss[0] == 'redirect') {
+            location.href = ss[1];
+            }
+            }
+    });
+    });
+
+
+</script>
+<!--{include home/footer}-->

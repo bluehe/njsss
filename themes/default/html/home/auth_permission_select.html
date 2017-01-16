@@ -1,0 +1,81 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+
+    <div class="main-content" style="padding: 20px 0">
+        <form method="get" action="${WEB_ROOT}/home/auth_permission_select">
+
+
+            <div class="order-list order_info half"><label class="left">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</label><div class="order-input"><input type="text" class="hover" name="name" value="{$name}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label><div class="order-input"><input type="text" class="hover" name="description" value="{$description}" placeholder="" /></div></div>
+
+
+            <div class="clear order-list"><div class="submitorder">
+                    <button type="submit" class="save btn btn-primary">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                </div></div>
+        </form>
+        <div class="clear materiel approve">
+            <div class="mb-5"><a class="right" href="${WEB_ROOT}/home/auth_permission"><i class="icon-plus"></i>添加新条目&nbsp;&nbsp;&nbsp;&nbsp;</a><div class="clear"></div></div>
+            <table>
+                <thead><tr>
+                        <!--                        <th><input type="checkbox" class="selectall" /></th>-->
+
+                        <th><a href="${WEB_ROOT}/home/auth_permission_select?name={$name}&description={$description}&by=name&order=${$by=='name'?($order=='asc'?'desc':'asc'):''}">名称 ${$by=='name'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/auth_permission_select?name={$name}&description={$description}&by=description&order=${$by=='description'?($order=='asc'?'desc':'asc'):''}">描述 ${$by=='description'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <!--                        <th><a href="${WEB_ROOT}/home/auth_permission_select?name={$name}&description={$description}&by=created_at&order=${$by=='created_at'?($order=='asc'?'desc':'asc'):''}">创建时间 ${$by=='created_at'?($order=='asc'?'↑':'↓'):''}</a></th>
+                                                <th><a href="${WEB_ROOT}/home/auth_permission_select?name={$name}&description={$description}&by=updated_at&order=${$by=='updated_at'?($order=='asc'?'desc':'asc'):''}">更新时间 ${$by=='updated_at'?($order=='asc'?'↑':'↓'):''}</a></th>-->
+                        <th>操作</th>
+                    </tr></thead>
+                <tbody class="materiel_body">
+                    <!--{if $nums>0}-->
+                    <!--{loop $permissions $permission}-->
+                    <tr>
+                        <!--                        <td class="mwd-40"><input type="checkbox" class="subcheck" name="id" value="{$permission[id]}" /></td>-->
+
+                        <td>{$permission['name']}</td>
+
+
+                        <td>{$permission['description']}</td>
+                        <!--                        <td>${date('Y-m-d H:i:s',$permission['created_at'])}</td>
+                                                <td>${date('Y-m-d H:i:s',$permission['updated_at'])}</td>-->
+                        <td>
+
+                            &nbsp;&nbsp;<a href="${WEB_ROOT}/home/auth_permission?id={$permission[name]}" title="编辑"><i class="icon-pencil"></i></a>
+                            &nbsp;&nbsp;<i class="icon-trash sure change" data-id="{$permission[name]}" data-type="delete"></i>
+
+                        </td></tr>
+                    <!--{/loop}-->
+                    <!--{else}-->
+                    <tr class="no_materiel"><td colspan="3">没有相应信息</td></tr>
+                    <!--{/if}-->
+                </tbody>
+            </table>
+
+            <div class="clear pages" style="float:left">
+                <div id="Pagination"></div>
+                <div class="searchPage">
+                    <span class="page-sum">共<strong class="allPage">{$nums}</strong>条</span>
+                </div>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/jquery.pagination.js"></script>
+<script type="text/javascript">
+
+            $(document).ready(function() {
+    $("#Pagination").pagination({$nums}, {items_per_page: {$INI['system']['page_num']}, current_page: {$page}, link_to: "/home/auth_permission_select?name={$name}&description={$description}&by={$by}&order={$order}&page=__id__"});
+    });
+            $('.change').on('click', function(){
+    if ($(this).hasClass('sure') && !confirm("确定进行此项操作？")){
+    return false;
+    } else{
+    dochange('permission', $(this));
+    }
+    });
+
+</script>
+<!--{include home/footer}-->

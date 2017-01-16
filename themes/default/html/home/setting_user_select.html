@@ -1,0 +1,125 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+
+    <div class="main-content" style="padding: 20px 0">
+        <form method="get" action="${WEB_ROOT}/home/setting_user_select">
+
+            <div class="order-list order_info half"><label class="left">用&nbsp;&nbsp;户&nbsp;&nbsp;名：</label><div class="order-input"><input type="text" class="hover" name="username" value="{$username}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">电子邮箱：</label><div class="order-input"><input type="text" class="hover" name="email" value="{$email}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">联系电话：</label><div class="order-input"><input type="text" class="hover" name="tel" value="{$tel}" placeholder="" /></div></div>
+
+            <div class="order-list order_info half"><label class="left">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label><div class="order-input"><select name="stat" class="hover">
+                        <option value="" ${$stat==""?'selected':''}>请选择</option>
+
+                        <option value="1" ${"$stat"=='1'?'selected':''}>正常</option>
+                        <option value="0" ${"$stat"=='0'?'selected':''}>锁定</option>
+
+                    </select></div></div>
+
+
+            <div class="clear order-list"><div class="submitorder">
+                    <button type="submit" class="save btn btn-primary">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                </div></div>
+        </form>
+        <div class="clear materiel approve">
+            <div class="mb-5">&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="excel_select"><i class="icon-download-alt"></i>导出选中</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" class="excel_all"><i class="icon-download"></i>全部导出</a></div>
+            <table>
+                <thead><tr><th><input type="checkbox" class="selectall" /></th>
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=username&order=${$by=='username'?($order=='asc'?'desc':'asc'):''}">用户名 ${$by=='username'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=email&order=${$by=='email'?($order=='asc'?'desc':'asc'):''}">电子邮箱 ${$by=='email'?($order=='asc'?'↑':'↓'):''}</a></th>
+
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=tel&order=${$by=='tel'?($order=='asc'?'desc':'asc'):''}">联系电话 ${$by=='tel'?($order=='asc'?'↑':'↓'):''}</a></th>
+
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=reg_ip&order=${$by=='reg_ip'?($order=='asc'?'desc':'asc'):''}">注册IP ${$by=='reg_ip'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=reg_time&order=${$by=='reg_time'?($order=='asc'?'desc':'asc'):''}">注册时间 ${$by=='reg_time'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=last_time&order=${$by=='last_time'?($order=='asc'?'desc':'asc'):''}">最近登录 ${$by=='last_time'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by=stat&order=${$by=='stat'?($order=='asc'?'desc':'asc'):''}">状态 ${$by=='stat'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th>操作</th>
+                    </tr></thead>
+                <tbody class="materiel_body">
+                    <!--{if $nums>0}-->
+                    <!--{loop $users $user}-->
+                    <tr>
+                        <td class="mwd-40"><input type="checkbox" class="subcheck" name="id" value="{$user[user_id]}" /></td>
+                        <td>{$user['username']}</td>
+                        <td>{$user['email']}</td>
+                        <td>{$user['tel']}</td>
+                        <td>{$user['reg_ip']}</td>
+                        <td>${date('Y-m-d H:i:s',$user['reg_time'])}</td>
+                        <td>${$user['last_time']?date('Y-m-d H:i:s',$user['last_time']):'未登录'}</td>
+                        <td>
+                            <span class="change label radius ${$user[stat]==1?'label-success':'label-danger'}" data-id="{$user[user_id]}" data-pkname="user_id" data-label="stat" data-value="${$user[stat]==1?0:1}">${$user[stat]==1?'正常':'锁定'}</span></td>
+                        <td>
+                            &nbsp;&nbsp;<a href="${WEB_ROOT}/home/setting_user?id={$user[user_id]}" title="编辑"><i class="icon-pencil"></i></a>
+                            <!--                            &nbsp;&nbsp;<a href="${WEB_ROOT}/home/user_invoice?id={$user[user_id]}" title="开票信息"><i class="icon-credit-card"></i></a>-->
+
+
+
+                        </td></tr>
+                    <!--{/loop}-->
+                    <!--{else}-->
+                    <tr class="no_materiel"><td colspan="9">没有相应信息</td></tr>
+                    <!--{/if}-->
+                </tbody>
+            </table>
+            <div class="order-list"><div class="submitorder" style="margin: 5px">
+                    <a class="more" data-id="1">更&nbsp;&nbsp;多&nbsp;<i class="icon-double-angle-down"></i></a>
+                </div>
+            </div>
+            <script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/jquery.pagination.js"></script>
+            <script type="text/javascript">
+
+                        $(document).ready(function() {
+                $("#Pagination").pagination({$nums}, {items_per_page: {$INI['system']['page_num']}, current_page: {$page}, link_to: "/home/setting_user_select?username={$username}&email={$email}&tel={$tel}&stat={$stat}&by={$by}&order={$order}&page=__id__"});
+                        var items = ${$INI['system']['page_num'] * ($page + 1)};
+                        var nums = {$nums};
+                        if (items >= nums){
+                $('.more').closest('.order-list').hide();
+                }
+                });
+                        $('.more').on('click', function(){
+                var more = $(this).attr('data-id');
+                        loadmore('setting_user_select', "username={$username}&email={$email}&tel={$tel}&stat={$stat}&by={$by}&order={$order}&page={$page}&more=" + more);
+                });
+                        $('.materiel').on('click', '.selectall', function(){
+
+                if ($(this).prop("checked")) {
+                $(".subcheck").prop("checked", true);
+                } else{
+                $(".subcheck").prop("checked", false);
+                }
+                });
+                        $('.materiel').on('click', '.subcheck', function(){
+                allchk();
+                });
+                        $('.excel_all').on('click', function(){
+                loadexcel('setting_user_select', "username={$username}&email={$email}&tel={$tel}&stat={$stat}&by={$by}&order={$order}")
+                });
+                        $('.excel_select').on('click', function(){
+                var id = $("input:checkbox[name='id']:checked").map(function(index, elem) {
+                return $(elem).val();
+                }).get().join(',');
+                        if (id){
+                loadexcel('setting_user_select', "by={$by}&order={$order}&id=" + id); } else{
+                toastr.error("没有选中任何内容！");
+                }
+                });
+                        $('.change').on('click', function(){
+                if ($(this).hasClass('sure') && !confirm("确定进行此项操作？")){
+                return false;
+                } else{
+                dochange('user', $(this));
+                }
+                });</script>
+            <div class="clear pages" style="float:left">
+                <div id="Pagination"></div>
+                <div class="searchPage">
+                    <span class="page-sum">共<strong class="allPage">{$nums}</strong>条</span>
+                </div>
+            </div>
+            <div class="clear"></div></div>
+
+    </div>
+</div>
+<!--{include home/footer}-->

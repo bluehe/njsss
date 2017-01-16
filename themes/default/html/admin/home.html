@@ -1,0 +1,55 @@
+<!--{include admin/header}-->
+
+<div class="container" id="cpcontainer">
+    <script type="text/JavaScript">if(parent.$('admincpnav')) parent.$('admincpnav').innerHTML='首页';</script>
+    <div class="itemtitle">
+        <h3>欢迎进入【{$INI['system']['sitename']}】</h3>
+    </div>
+
+    <table class="tb tb2 fixpadding">
+
+        <tr>
+            <th colspan="2" class="partition">系统信息</th>
+        </tr>
+
+        <tr>
+            <td class="vtop td24 lineheight">系统程序版本</td>
+            <td class="lineheight smallfont">ESCM {$INI['system']['version']}</td>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">操作系统</td>
+            <td class="lineheight smallfont">${PHP_OS} </td>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">服务器软件</td>
+            <td class="lineheight smallfont">{$_SERVER['SERVER_SOFTWARE']}</td>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">MySQL 版本</td>
+            <td class="lineheight smallfont">{$ms_vs}</td>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">上传许可</td>
+            <td class="lineheight smallfont">${get_cfg_var("upload_max_filesize")?get_cfg_var("upload_max_filesize"):"不允许上传附件"}</td>
+        </tr>
+    </table>
+    <table class="tb tb2 fixpadding">
+        <tr>
+            <th colspan="2" class="partition">DMS 开发团队</th>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">系统开发者</td>
+            <td><span>易采通（常州）供应链管理有限公司</span></td>
+        </tr>
+        <tr>
+            <td class="vtop td24 lineheight">系统设计者</td>
+            <td><span>易采通（常州）供应链管理有限公司</span></td>
+        </tr>
+
+        <tr>
+            <td class="vtop td24 lineheight">&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</div>
+<!--{include admin/footer}-->

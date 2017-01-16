@@ -1,0 +1,128 @@
+<!--{include home/header}-->
+<div class="main-bd" >
+
+    <div class="main-content">
+        <form method="post" action="${WEB_ROOT}/home/setting_version">
+            <input type="hidden" name="form_type" value="setting_version" />
+            <input type="hidden" name="id" value="{$id}" />
+
+            <div class="main-list reg_info"><label><b class="red">*</b>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label>
+                <label class="reg_radio"><input type="radio" name="version[stat]" value="1" ${"0"==$version[stat]?'':'checked'} />启用</label>
+                <label class="reg_radio"><input type="radio" name="version[stat]" value="0" ${"0"==$version[stat]?'checked':''} />关闭</label>
+            </div>
+            <div class="main-list reg_info"><label><b class="red">*</b>自动更新：</label>
+                <label class="reg_radio"><input type="radio" name="version[auto]" value="1" ${"1"==$version[auto]?'checked':''} />是</label>
+                <label class="reg_radio"><input type="radio" name="version[auto]" value="0" ${"1"==$version[auto]?'':'checked'} />否</label>
+            </div>
+
+            <div class="main-list reg_info"><label><b class="red">*</b>旧&nbsp;&nbsp;版&nbsp;&nbsp;本：</label><input type="text" class="hover" name="version[old_version]" value="{$version['old_version']}" /></div>
+            <div class="main-list reg_info"><label><b class="red">*</b>新&nbsp;&nbsp;版&nbsp;&nbsp;本：</label><input type="text" class="hover" name="version[new_version]" value="{$version['new_version']}" /></div>
+
+
+            <div class="main-list reg_info">
+                <label class="left"><b class="red">*</b>更新文件：</label>
+
+                <div id="upload-wrap" class="upload-widget-wrap upload-btn-wrap acl-hide html5 left" style="margin:7px 0 6px 30px;"><a id="pickFiles" class="btn btn-xs btn-info" style=" z-index: 0;margin-left: 0"><i class="icon-upload-alt"></i> 上传文件</a><span class="upload-tip">点击上传按钮选择文件或将文件拖拽到此</span>
+                    <div class="entity-container">
+                        <!--{loop $attachs $key $attach}-->
+                        <div class="entity-item attachment left">
+                            <input type="hidden" class="filename" name="version[file][]" value="{$attach}" />
+                            <input type="hidden" name="version[size][]" value="{$sizes[$key]}" />
+                            <a href="${WEB_ROOT}{$attach}"><span>${substr($attach,-19)}</span> (${format_bytes($sizes[$key])})</a>&nbsp;&nbsp;<a class="delfile btn btn-xs btn-info" href="javascript:void(0);" >删除</a></div>
+                        <!--{/loop}-->
+                    </div>
+
+                </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <div class="main-list reg_info"><label class="left">更新描述：</label><div class="left" style="margin:7px 0 6px 30px;">
+                    <textarea name="version[content]" id="container" style="width: 800px">{$version[content]}</textarea>
+                </div><div class="clear"></div></div>
+
+            <div class="main-list"><a class="save btn btn-primary" href="javascript:history.go(-1)">返回</a><button type="submit" class="save btn btn-primary">保存修改</button></div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.all.min.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+            var ue = UE.getEditor('container');
+            ue.addListener("contentChange", function(){
+
+            $(".main-bd").getNiceScroll().resize();
+            });</script>
+<script type="text/javascript">
+            $('form').on('submit', function(event) {
+    event.preventDefault();
+            $.ajax({
+            type: "POST",
+                    url: WEB_ROOT + "/home/doform",
+                    data: $(this).serialize(),
+                    //async: false,
+                    success: function(data) {
+                    var ss = data.split("|");
+                            if (ss[0] == 'error') {
+                    toastr.error(ss[1]);
+                    } else if (ss[0] == 'success') {
+                    toastr.success(ss[1]);
+                    } else if (ss[0] == 'redirect') {
+                    location.href = ss[1];
+                    }
+                    }
+            });
+    });
+            var uploader = new plupload.Uploader({
+            browse_button: 'pickFiles', //触发文件选择对话框的按钮，为那个元素id
+                    url: '${WEB_ROOT}/home/uploadfile', //服务器端的上传页面地址
+                    flash_swf_url: '${WEB_ROOT}/themes/default/js/plupload/Moxie.swf', //swf文件，当需要使用swf方式进行上传时需要配置该参数
+                    silverlight_xap_url: '${WEB_ROOT}/themes/default/js/plupload/Moxie.xap', //silverlight文件，当需要使用silverlight方式进行上传时需要配置该参数
+                    filters: {
+                    mime_types: [//只允许上传zip
+                    {title: "Zip files", extensions: "zip"}
+                    ]
+                            // prevent_duplicates: true //不允许选取重复文件
+                    },
+                    drop_element: 'upload-wrap',
+                    multi_selection: false,
+                    multipart_params: {dir: 'update'}
+            });
+            uploader.init();
+            //绑定文件添加进队列事件
+            uploader.bind('FilesAdded', function(uploader, files) {
+            uploader.start(); //开始上传
+            });
+            uploader.bind('FileUploaded', function(uploader, file, responseObject) {
+            if (responseObject.status == 200 && responseObject.response) {
+            $('.entity-container').append('<div class="entity-item attachment left"><input type="hidden" class="filename" name="version[file][]" value="' + responseObject.response + '" /><input type="hidden" name="version[size][]" value="' + file.size + '" /><a href="' + responseObject.response + '"><span>' + responseObject.response.substr( - 19) + '</span> (' + filesize(file.size) + ')</a>&nbsp;&nbsp;<a class="delfile btn btn-xs btn-info" href="javascript:void(0);" >删除</a></div>');
+                    $(".main-bd").getNiceScroll().resize();
+            }
+
+            });
+            $('.entity-container').on('click', '.delfile', function() {
+    var $this = $(this);
+            var filename = $this.closest('.entity-item').find('.filename').val();
+            $.ajax({
+            type: "POST",
+                    url: WEB_ROOT + "/home/delfile",
+                    data: "filename=" + filename,
+                    success: function(data) {
+                    var ss = data.split("|");
+                            if (ss[0] == 'error') {
+                    toastr.error(ss[1]);
+                    } else if (ss[0] == 'success') {
+                    toastr.success(ss[1] + '请保存修改！');
+                            $this.closest('.entity-item').remove();
+                    } else if (ss[0] == 'info') {
+                    toastr.error(ss[1]);
+                            $this.closest('.entity-item').remove();
+                    }
+                    }
+            });
+    });
+
+</script>
+<!--{include home/footer}-->

@@ -1,0 +1,54 @@
+<!--{include home/header}-->
+<div class="main-bd" >
+
+    <div class="main-content">
+        <form method="post" action="${WEB_ROOT}/home/auth_role">
+            <input type="hidden" name="form_type" value="auth_role" />
+            <input type="hidden" name="id" value="{$id}" />
+
+            <div class="main-list reg_info"><label><b class="red">*</b>名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</label><input type="text" class="hover" name="role[name]" value="{$role['name']}" /></div>
+            <div class="main-list reg_info"><label><b class="red">&nbsp;&nbsp;</b>描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label><input type="text" class="hover" name="role[description]" value="{$role['description']}" /></div>
+
+            <div class="main-list reg_info"><label class="left">&nbsp;&nbsp;权&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;限：</label>
+                <div class="left" style="width:85%;">
+                    <!--{loop $permissions $k $p}-->
+                    <label class="reg_radio"><input type="checkbox" name="permission[]" value="{$k}" ${in_array($k,$role_per)?'checked':''} /><abbr title="{$p}">{$k}</abbr></label>
+                    <!--{/loop}-->
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+
+
+
+            <div class="main-list"><a class="btn btn-primary" style="margin: 7px 0 0 20px;" href="${WEB_ROOT}/home/auth_role">添加新条目</a><a class="save btn btn-primary" href="javascript:history.go(-1)">返回</a><button type="submit" class="save btn btn-primary">保存修改</button></div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    $('form').on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: WEB_ROOT + "/home/doform",
+            data: $(this).serialize(),
+            //async: false,
+            success: function(data) {
+                var ss = data.split("|");
+                if (ss[0] == 'error') {
+                    toastr.error(ss[1]);
+                } else if (ss[0] == 'success') {
+                    toastr.success(ss[1]);
+                } else if (ss[0] == 'redirect') {
+                    location.href = ss[1];
+                }
+            }
+        });
+    });
+
+</script>
+<!--{include home/footer}-->

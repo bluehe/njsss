@@ -1,0 +1,33 @@
+</div>
+</div>
+<script type="text/javascript">
+    $('.dropdown').hover(function() {
+        $(this).addClass('open');
+    }, function() {
+        $(this).removeClass('open');
+    });
+    $('.dislpayarrow').on('click', function() {
+
+        $(".aside").getNiceScroll().hide();
+        $(".main-bd").getNiceScroll().hide();
+        if ($('.maincontainer').hasClass('min')) {
+            $('.aside').show().animate({width: "251px"}, '1000');
+            $(this).animate({left: "250px"}, '1000');
+            $('.main').animate({left: "251px"}, '1000');
+            setTimeout('$(".aside").getNiceScroll().show().resize()', '1000');
+            $(".main-bd").getNiceScroll().show();
+            $.cookie('aside', '');
+        } else {
+            $('.aside').animate({width: 0, display: "none"}, '1000');
+            $(this).animate({left: 0}, '1000');
+            $('.main').animate({left: 0}, '1000');
+            setTimeout('$(".main-bd").getNiceScroll().show().resize()', '1000');
+            $.cookie('aside', 'leftmin');
+        }
+        $('.maincontainer').toggleClass('min');
+        $(this).find('i').toggleClass('icon-caret-left').toggleClass('icon-caret-right');
+
+
+    });
+</script>
+<!--{include home/html_footer}-->
