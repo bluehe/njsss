@@ -1,0 +1,54 @@
+<!--{include admin/header}-->
+
+<div class="container" id="cpcontainer">
+    <script type="text/JavaScript">if(parent.$('admincpnav')) parent.$('admincpnav').innerHTML='全局&nbsp;&raquo;&nbsp;安全设置';</script>
+    <div class="itemtitle">
+        <h3>安全验证设置</h3>
+    </div>
+    <form name="cpform" method="post" action="${WEB_ROOT}/admin/sec" id="cpform" >
+        <table class="tb tb2 " id="seccode">
+            <tr>
+                <td colspan="2" class="td27">启用验证码:</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform"><ul class="nofloat" onmouseover="altStyle(this);">
+                        <li ${in_array('1',$sec)?'class="checked"':''}>
+                            <input class="checkbox" type="checkbox" name="seccodestatus[]" value="1" ${in_array('1',$sec)?'checked="checked"':''}>
+                            &nbsp;新用户注册</li>
+                        <li ${in_array('2',$sec)?'class="checked"':''}>
+                            <input class="checkbox" type="checkbox" name="seccodestatus[]" value="2" ${in_array('2',$sec)?'checked="checked"':''}>
+                            &nbsp;用户登录</li>
+                        <li ${in_array('3',$sec)?'class="checked"':''}>
+                            <input class="checkbox" type="checkbox" name="seccodestatus[]" value="3" ${in_array('3',$sec)?'checked="checked"':''}>
+                            &nbsp;找回密码</li>
+
+
+                    </ul></td>
+                <td class="vtop tips2">验证码可以避免恶意注册及机器人，请选择需要打开验证码的操作。注意: 启用验证码会使得部分操作变得繁琐，建议仅在必需时打开<br />
+                    <span style="cursor: pointer" id="seccodeimage"><img id="code" src="${WEB_ROOT}/account/create_seccode" alt="看不清楚，换一张" style="cursor: pointer; vertical-align:middle;height: 32px;" onClick="create_code()" /> </span><br />
+                    <a href="javascript:void(0);" onclick="create_code()">[刷新]</a></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="td27">验证码字符个数:</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform"><input name="seccode_length" value="{$INI['system']['seccode_length']}" type="text" class="txt" /></td>
+                <td class="vtop tips2">验证码字符个数，最多32个</td>
+            </tr>
+            <tr>
+                <td colspan="15"><div class="fixsel">
+                        <input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交您的修改" value="提交" />
+                    </div></td>
+            </tr>
+
+        </table>
+        <script>
+            function create_code() {
+                $('code').src = '${WEB_ROOT}/account/create_seccode?' + Math.random() * 10000;
+            }
+        </script>
+        <script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'settingsubmit'); });</script>
+    </form>
+</div>
+<!--{include admin/footer}-->

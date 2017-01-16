@@ -1,0 +1,90 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+
+    <div class="main-content" style="padding: 20px 0">
+        <form method="get" action="${WEB_ROOT}/home/setting_version_select">
+            <div class="order-list order_info half"><label class="left">旧&nbsp;&nbsp;版&nbsp;&nbsp;本：</label><div class="order-input"><input type="text" class="hover" name="old_version" value="{$old_version}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">新&nbsp;&nbsp;版&nbsp;&nbsp;本：</label><div class="order-input"><input type="text" class="hover" name="new_version" value="{$new_version}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">自动更新：</label><div class="order-input"><select name="auto" class="hover">
+                        <option value="" ${$auto==""?'selected':''}>请选择</option>
+                        <option value="1" ${"$auto"=="1"?'selected':''}>是</option>
+                        <option value="0" ${"$auto"=="0"?'selected':''}>否</option>
+                    </select></div></div>
+            <div class="order-list order_info half"><label class="left">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label><div class="order-input"><select name="stat" class="hover">
+                        <option value="" ${$stat==""?'selected':''}>请选择</option>
+                        <option value="1" ${"$stat"=="1"?'selected':''}>启用</option>
+                        <option value="0" ${"$stat"=="0"?'selected':''}>关闭</option>
+
+                    </select></div></div>
+
+
+            <div class="clear order-list"><div class="submitorder">
+                    <button type="submit" class="save btn btn-primary">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                </div></div>
+        </form>
+        <div class="clear materiel approve">
+            <div class="mb-5"><a class="right" href="${WEB_ROOT}/home/setting_version"><i class="icon-plus"></i>添加新更新&nbsp;&nbsp;&nbsp;&nbsp;</a><div class="clear"></div></div>
+            <table>
+                <thead><tr>
+
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=old_version&order=${$by=='old_version'?($order=='asc'?'desc':'asc'):''}">旧版本 ${$by=='old_version'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=new_version&order=${$by=='new_version'?($order=='asc'?'desc':'asc'):''}">新版本 ${$by=='new_version'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=size&order=${$by=='size'?($order=='asc'?'desc':'asc'):''}">文件大小 ${$by=='size'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=update_time&order=${$by=='update_time'?($order=='asc'?'desc':'asc'):''}">更新时间 ${$by=='update_time'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=auto&order=${$by=='auto'?($order=='asc'?'desc':'asc'):''}">自动更新 ${$by=='auto'?($order=='asc'?'↑':'↓'):''}</a></th>
+
+                        <th><a href="${WEB_ROOT}/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by=stat&order=${$by=='stat'?($order=='asc'?'desc':'asc'):''}">状态 ${$by=='stat'?($order=='asc'?'↑':'↓'):''}</a></th>
+
+                        <th>操作</th>
+                    </tr></thead>
+                <tbody class="materiel_body">
+                    <!--{if $nums>0}-->
+                    <!--{loop $versions $version}-->
+                    <tr>
+
+
+                        <td>{$version['old_version']}</td>
+
+                        <td>{$version['new_version']}</td>
+
+                        <td>${format_bytes(array_sum(explode(',',$version['size'])))}</td>
+                        <td>${$version['update_time']>0?date('Y-m-d H:i:s',$version['update_time']):''}</td>
+                        <td><span class="change label radius ${$version[auto]==1?'label-success':'label-default'}" data-id="{$version[id]}" data-label="auto" data-value="${$version[auto]==1?0:1}">${$version[auto]==1?'是':'否'}</span></td>
+                        <td><span class="change label radius ${$version[stat]==1?'label-success':'label-default'}" data-id="{$version[id]}" data-label="stat" data-value="${$version[stat]==1?0:1}">${$version[stat]==1?'启用':'关闭'}</span></td>
+                        <td>
+                            &nbsp;&nbsp;<a href="${WEB_ROOT}/home/setting_version?id={$version[id]}" title="编辑"><i class="icon-pencil"></i></a>
+                            <!--                            &nbsp;&nbsp;<i class="icon-trash sure change" data-id="{$version[id]}" data-type="delete"></i>-->
+                        </td></tr>
+                    <!--{/loop}-->
+                    <!--{else}-->
+                    <tr class="no_materiel"><td colspan="7">没有相应信息</td></tr>
+                    <!--{/if}-->
+                </tbody>
+            </table>
+
+            <script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/jquery.pagination.js"></script>
+            <script type="text/javascript">
+                        $(document).ready(function() {
+                $("#Pagination").pagination({$nums}, {items_per_page: {$INI['system']['page_num']}, current_page: {$page}, link_to: "/home/setting_version_select?new_version={$new_version}&old_version={$old_version}&auto={$auto}&stat={$stat}&by={$by}&order={$order}&page=__id__"});
+                });</script>
+            <div class="clear pages" style="float:left">
+                <div id="Pagination"></div>
+                <div class="searchPage">
+                    <span class="page-sum">共<strong class="allPage">{$nums}</strong>条</span>
+                </div>
+            </div>
+            <div class="clear"></div></div>
+
+    </div>
+</div>
+<script type="text/javascript">
+            $('.change').on('click', function(){
+    if ($(this).hasClass('sure') && !confirm("确定进行此项操作？")){
+    return false;
+    } else{
+    dochange('version', $(this));
+    }
+    });
+</script>
+<!--{include home/footer}-->

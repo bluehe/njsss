@@ -1,0 +1,48 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+
+    <div class="main-content">
+        <form method="post" action="${WEB_ROOT}/home/user_invoice">
+            <input type="hidden" name="form_type" value="user_invoice" />
+            <div class="main-list reg_info"><label>开&nbsp;&nbsp;具&nbsp;&nbsp;&nbsp;类&nbsp;&nbsp;型：</label>
+                <label class="reg_radio"><input type="radio" name="invoice[type]" class="type" value="person" ${'person'==$invoice[type]?'checked':''} />个人</label>
+                <label class="reg_radio"><input type="radio" name="invoice[type]" class="type" value="company" ${'person'==$invoice[type]?'':'checked'} />企业</label></div>
+            <div class="main-list reg_info"><label>发&nbsp;&nbsp;票&nbsp;&nbsp;&nbsp;抬&nbsp;&nbsp;头：</label><input type="text" class="hover invoice_name" name="invoice[name]" value="{$invoice[name]}" /></div>
+            <div class="main-list reg_info"><label>发&nbsp;&nbsp;票&nbsp;&nbsp;&nbsp;类&nbsp;&nbsp;型：</label>
+                <label class="reg_radio"><input type="radio" name="invoice[mold]" class="mold" value="common" ${'common'==$invoice[mold]?'checked':''} />增值税普通发票<abbr title="增值税普通发票开给小规模纳税人或者开票资料不齐全的购买人，购买人取得后不可以进行进项税额抵扣。若您还有疑问，建议联系贵司财务确认后再提交开票需求。"><i class="icon-question-sign"></i></abbr></label>
+                <label class="reg_radio"><input type="radio" name="invoice[mold]" class="mold" value="special" ${'common'==$invoice[mold]?'':'checked'} />增值税专用发票<abbr title="增值税专用发票开给一般纳税人，申请时需要提供公司名称、税号、地址电话、开户行名称及账号，一般纳税人批复，购买人取得后可以进行进项税额抵扣。若您还有疑问，建议联系贵司财务确认后再提交开票需求。"><i class="icon-question-sign"></i></abbr></label></div>
+            <div class="main-list reg_info special"><label>税务登记证号：</label><input type="text" class="hover" name="invoice[tax_no]" value="{$invoice[tax_no]}" /></div>
+            <div class="main-list reg_info special"><label>开户银行名称：</label><input type="text" class="hover" name="invoice[bank_name]" value="{$invoice[bank_name]}" /></div>
+            <div class="main-list reg_info special"><label>开户银行账号：</label><input type="text" class="hover" name="invoice[bank_no]" value="{$invoice[bank_no]}" /></div>
+            <div class="main-list reg_info special"><label>注册场所地址：</label><input type="text" class="hover" name="invoice[reg_address]" value="{$invoice[reg_address]}" /></div>
+            <div class="main-list reg_info special"><label>注册固定电话：</label><input type="text" class="hover" name="invoice[reg_tel]" value="{$invoice[reg_tel]}" /></div>
+            <div class="main-list"><button type="submit" class="save btn btn-primary">保存修改</button></div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    invoice();
+    $('.type,.mold').on('click', function() {
+        invoice();
+    });
+    $('form').on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: WEB_ROOT + "/home/doform",
+            data: $(this).serialize(),
+            async: false,
+            success: function(data) {
+                var ss = data.split("|");
+                if (ss[0] == 'error') {
+                    toastr.error(ss[1]);
+                } else if (ss[0] == 'success') {
+                    toastr.success(ss[1]);
+                }
+            }
+        });
+    });
+</script>
+<!--{include home/footer}-->

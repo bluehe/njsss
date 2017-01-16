@@ -1,0 +1,81 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+    <div class="message_nav"><ul class="nav"><li class="noread active"><a>未读</a></li><li class="read"><a>已读</a></li></ul>
+        <div class="toollist-box">
+            <ul class="toolkit-list">
+                <li class="j_page toolkit-item dropdown-arrow-pre"><a class="btn btn-sm btn-primary">当页标记已读</a></li>
+                <li class="toolkit-item dropdown-arrow"><div class="btn-group dropdown dropdown-menu-toggle"><a class="dropdown-toggle btn btn-sm btn-primary"><i class="icon-angle-down"></i></a><ul class="dropdown-menu dropdown-menu-right border-dropdown"><li><a class="j_all_read">全部标记已读</a></li></ul></div></li>
+            </ul></div>
+    </div>
+    <div class="message">
+        <div class="message-list hide">
+
+        </div>
+        <div class="nodata-holder mt-70 hide"><div><i class="ico icon-bell-alt icon-5x"></i><h4>暂时没有消息哦！</h4><p class="small">消息，让您及时接收并处理事项，提高工作效率！</p></div></div>
+        <div class="loading_small"><span><i class="icon-spinner icon-spin"></i> 正在加载数据，请稍后...</span></div>
+        <div class="common-more hide">更多 <i class="icon-angle-down"></i></div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var s = 1;
+        var id = '';
+        loadmessage(id, s);
+    });
+    $('.common-more').on('click', function() {
+        var s = $('.noread').hasClass('active') ? 1 : 0;
+        var id = '';
+        $('.message-item').each(function() {
+            id += $(this).attr('data-id') + ',';
+        });
+        loadmessage(id, s);
+    });
+    $(".noread,.read").on('click', function() {
+        var s = $(this).hasClass('noread') ? 1 : 0;
+        var id = '';
+        $('.message-list').empty();
+        loadmessage(id, s);
+    });
+    $('.message_nav li').on('click', function() {
+        $(this).addClass("active").siblings("li").removeClass("active");
+    });
+    $('.dropdown-arrow').hover(function() {
+        $(this).find('.dropdown-menu-toggle').addClass('open');
+    }, function() {
+        $(this).find('.dropdown-menu-toggle').removeClass('open');
+    });
+    $('.noread').on('click', function() {
+        $('.toollist-box').show();
+    });
+    $('.read').on('click', function() {
+        $('.toollist-box').hide();
+    });
+    $('.message-list').on('click', '.message-item', function() {
+        $(this).addClass("active").siblings(".message-item").removeClass("active");
+        $(this).find('.content').slideUp("fast").toggleClass("hl").slideDown("fast");
+        var id = $(this).attr('data-id');
+        readmessage(id);
+        //自动收缩
+        //        $(this).not(".active").find('.content').slideUp("fast").removeClass("hl").slideDown("fast");
+        //        $(this).addClass("active").siblings(".message-item").removeClass("active");
+        //        $('.message-item').not(".active").find('.content').not(".hl").slideUp("fast").addClass("hl").slideDown("fast");
+    });
+    $('.j_page').on('click', function() {
+        var id = '';
+        $('.message-item').each(function() {
+            id += $(this).attr('data-id') + ',';
+        });
+        readmessage(id);
+    });
+    $('.j_all_read').on('click', function() {
+        var id = 'all';
+        readmessage(id);
+    });
+
+
+</script>
+<!--{include home/footer}-->

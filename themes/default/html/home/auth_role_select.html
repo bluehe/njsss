@@ -1,0 +1,81 @@
+<!--{include home/header}-->
+
+<div class="main-bd" >
+
+    <div class="main-content" style="padding: 20px 0">
+        <form method="get" action="${WEB_ROOT}/home/auth_role_select">
+
+
+            <div class="order-list order_info half"><label class="left">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</label><div class="order-input"><input type="text" class="hover" name="name" value="{$name}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述：</label><div class="order-input"><input type="text" class="hover" name="description" value="{$description}" placeholder="" /></div></div>
+            <div class="order-list order_info half"><label class="left">权&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;限：</label><div class="order-input"><select name="permission" class="hover">
+                        <option value="" ${$permission==""?'selected':''}>请选择</option>
+                        <!--{loop $permissions $p}-->
+                        <option value="{$p}" ${"$permission"==$p?'selected':''}>{$p}</option>
+                        <!--{/loop}-->
+
+
+                    </select></div></div>
+
+            <div class="clear order-list"><div class="submitorder">
+                    <button type="submit" class="save btn btn-primary">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                </div></div>
+        </form>
+        <div class="clear materiel approve">
+            <div class="mb-5"><a class="right" href="${WEB_ROOT}/home/auth_role"><i class="icon-plus"></i>添加新角色&nbsp;&nbsp;&nbsp;&nbsp;</a><div class="clear"></div></div>
+            <table>
+                <thead><tr>
+
+                        <th><a href="${WEB_ROOT}/home/auth_role_select?name={$name}&description={$description}&permission={$permission}&by=name&order=${$by=='name'?($order=='asc'?'desc':'asc'):''}">名称 ${$by=='name'?($order=='asc'?'↑':'↓'):''}</a></th>
+                        <th><a href="${WEB_ROOT}/home/auth_role_select?name={$name}&description={$description}&permission={$permission}&by=description&order=${$by=='description'?($order=='asc'?'desc':'asc'):''}">描述 ${$by=='description'?($order=='asc'?'↑':'↓'):''}</a></th>
+
+                        <th>权限</th>
+                        <th>操作</th>
+                    </tr></thead>
+                <tbody class="materiel_body">
+                    <!--{if $nums>0}-->
+                    <!--{loop $roles $role}-->
+                    <tr>
+                        <td>{$role['name']}</td>
+                        <td>{$role['description']}</td>
+                        <td>${implode(',',$role['permission'])}</td>
+                        <td>
+                            &nbsp;&nbsp;<a href="${WEB_ROOT}/home/auth_role?id={$role[name]}" title="编辑"><i class="icon-pencil"></i></a>
+                            &nbsp;&nbsp;<i class="icon-trash sure change" data-id="{$role[name]}" data-type="delete"></i>
+
+                        </td></tr>
+                    <!--{/loop}-->
+                    <!--{else}-->
+                    <tr class="no_materiel"><td colspan="4">没有相应信息</td></tr>
+                    <!--{/if}-->
+                </tbody>
+            </table>
+
+            <div class="clear pages" style="float:left">
+                <div id="Pagination"></div>
+                <div class="searchPage">
+                    <span class="page-sum">共<strong class="allPage">{$nums}</strong>条</span>
+                </div>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/jquery.pagination.js"></script>
+<script type="text/javascript">
+
+            $(document).ready(function() {
+    $("#Pagination").pagination({$nums}, {items_per_page: {$INI['system']['page_num']}, current_page: {$page}, link_to: "/home/auth_role_select?name={$name}&description={$description}&permission={$permission}&by={$by}&order={$order}&page=__id__"});
+    });
+            $('.change').on('click', function(){
+    if ($(this).hasClass('sure') && !confirm("确定进行此项操作？")){
+    return false;
+    } else{
+    dochange('role', $(this));
+    }
+    });
+
+</script>
+<!--{include home/footer}-->

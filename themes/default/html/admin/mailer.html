@@ -1,0 +1,64 @@
+<!--{include admin/header}-->
+
+<div class="container" id="cpcontainer">
+    <script type="text/JavaScript">if(parent.$('admincpnav')) parent.$('admincpnav').innerHTML='全局&nbsp;&raquo;&nbsp;邮件模板';</script>
+
+    <div class="floattop">
+        <div class="itemtitle">
+            <h3>邮件模板</h3>
+        </div>
+    </div>
+    <div class="floattopempty"></div>
+
+    <form name="cpform" method="post" action="${WEB_ROOT}/admin/mailer?id={$id}" id="cpform" >
+        <table class="tb tb2 nobdb" id="register">
+            <tr class="noborder">
+                <td class="td24">模板选择:</td>
+                <td class="vtop rowform">
+                    <select name="id" onchange="adminloadpage('mailer', this.value, '${WEB_ROOT}');">${Utility::Option($mailers, $id, '')}</select>
+                </td>
+                <td class="vtop tips2"></td>
+            </tr>
+            <!--{if $content||$id}-->
+            <tr class="noborder">
+                <td class="td24">页面标题:</td>
+                <td class="vtop rowform">
+                    <input name="title" value="${htmlspecialchars($n['title'])}" type="text" class="txt"   /></td>
+                <td class="vtop tips2"></td>
+            </tr>
+            <tr class="noborder">
+                <td class="td24 vtop">页面内容:</td>
+
+                <td class="vtop rowform">
+                    <textarea name="value" id="container" style="width:700px;height:300px;">{$n['value']}</textarea>
+
+                <td class="vtop tips2"></td>
+            </tr>
+
+            <!--{/if}-->
+
+        </table>
+        <table class="tb tb2 nobdt">
+            <tr>
+                <td></td>
+                <td colspan="10"><div class="fixsel">
+                        <input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交您的修改" value="提交" />
+                    </div></td>
+            </tr>
+            <tr>
+                <td height="30px;"></td>
+            </tr>
+
+        </table>
+        <script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'settingsubmit'); });</script>
+    </form>
+</div>
+
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="${WEB_ROOT}/themes/{$INI['system']['skin']}/js/ueditor/ueditor.all.min.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+                                var ue = UE.getEditor('container');
+</script>
+<!--{include admin/footer}-->

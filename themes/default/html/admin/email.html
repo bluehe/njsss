@@ -1,0 +1,122 @@
+<!--{include admin/header}-->
+
+<div class="container" id="cpcontainer">
+    <script type="text/JavaScript">if(parent.$('admincpnav')) parent.$('admincpnav').innerHTML='全局&nbsp;&raquo;&nbsp;邮件设置';</script>
+    <div class="floattop">
+        <div class="itemtitle">
+            <h3>邮件设置</h3>
+            <ul class="tab1" id="submenu">
+                <li id="nav_mailsettings" onclick="showanchor(this)" class="current"><a href="javascript:void(0);"><span>设置</span></a></li>
+                <li id="nav_mailcheck" onclick="showanchor(this)"><a href="javascript:void(0);"><span>检测</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="floattopempty"></div>
+    <form name="cpform" method="post" action="${WEB_ROOT}/admin/email" >
+        <table class="tb tb2 " id="mailsettings">
+            <tr>
+                <td colspan="2" class="td27">邮件发送方式:</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform"><ul class="nofloat" onmouseover="altStyle(this);">
+                        <!--
+                        <li ${$INI['system']['mail_sendtype']==1?'class="checked"':''}>
+                          <input class="radio" type="radio" name="mailsend" value="1" ${$INI['system']['mail_sendtype']==1?'checked="checked"':''} onclick="$('hidden1').style.display = 'none';$('hidden2').style.display = 'none';">
+                          &nbsp;通过 PHP 函数的 sendmail 发送(推荐此方式)</li>
+                        -->
+                        <li ${$INI['system']['mail_sendtype']==2?'class="checked"':''} >
+                            <input class="radio" type="radio" name="mailsend" value="2" ${$INI['system']['mail_sendtype']==2?'checked="checked"':''} onclick="$('hidden1').style.display = '';
+                                    $('hidden2').style.display = '';">
+                            &nbsp;通过 SOCKET 连接 SMTP 服务器发送(支持 ESMTP 验证)</li>
+                    </ul></td>
+                <td class="vtop tips2"></td>
+            </tr>
+            <tbody class="sub" id="hidden1" ${$INI['system']['mail_sendtype']==1?'style="display: none"':''}>
+                   <tr>
+                    <td colspan="2" class="td27">SMTP 服务器:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><input name="server" value="{$INI['system']['mail_server']}" type="text" class="txt"   /></td>
+                    <td class="vtop tips2">设置 SMTP 服务器的地址</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="td27">SMTP 端口:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><input name="port" value="{$INI['system']['mail_port']}" type="text" class="txt"   /></td>
+                    <td class="vtop tips2">设置 SMTP 服务器的端口，默认为 25</td>
+                </tr>
+            </tbody>
+            <tbody class="sub" id="hidden2" ${$INI['system']['mail_sendtype']==1?'style="display: none"':''}>
+                   <tr>
+                    <td colspan="2" class="td27">SMTP 服务器要求身份验证:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><ul onmouseover="altStyle(this);">
+                            <li ${$INI['system']['mail_auth']==1?'class="checked"':''}>
+                                <input class="radio" type="radio" name="auth" value="1" ${$INI['system']['mail_auth']==1?'checked="checked"':''}>
+                                &nbsp;是</li>
+                            <li ${$INI['system']['mail_auth']==0?'class="checked"':''}>
+                                <input class="radio" type="radio" name="auth" value="0" ${$INI['system']['mail_auth']==0?'checked="checked"':''}>
+                                &nbsp;否</li>
+                        </ul></td>
+                    <td class="vtop tips2">如果 SMTP 服务器要求身份验证才可以发信，请选择“是”</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="td27">发信人邮件地址:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><input name="from" value="{$INI['system']['mail_from']}" type="text" class="txt"   /></td>
+                    <td class="vtop tips2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="td27">SMTP 身份验证用户名:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><input name="username" value="{$INI['system']['mail_username']}" type="text" class="txt"   /></td>
+                    <td class="vtop tips2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="td27">SMTP 身份验证密码:</td>
+                </tr>
+                <tr class="noborder">
+                    <td class="vtop rowform"><input name="password" value="{$INI['system']['mail_password']}" type="text" class="txt"   /></td>
+                    <td class="vtop tips2"></td>
+                </tr>
+            </tbody>
+            <tr>
+                <td colspan="15"><div class="fixsel">
+                        <input type="submit" class="btn" id="submit_settingsubmit" name="settingsubmit" title="按 Enter 键可随时提交您的修改" value="提交" />
+                    </div></td>
+            </tr>
+
+        </table>
+        <script type="text/JavaScript">_attachEvent(document.documentElement, 'keydown', function (e) { entersubmit(e, 'settingsubmit'); });</script>
+        <table class="tb tb2 " id="mailcheck" style="display: none">
+            <tr>
+                <td colspan="2" class="td27">测试发件人:</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform"><input name="test_from" value="" type="text" class="txt"   /></td>
+                <td class="vtop tips2"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="td27">测试收件人:</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform"><textarea  rows="6" ondblclick="textareasize(this, 1)" name="test_to" id="test_to" cols="50" class="tarea"></textarea></td>
+                <td class="vtop tips2">多个邮件地址用逗(,)号分隔<br />
+                    双击输入框可扩大/缩小</td>
+            </tr>
+            <tr>
+                <td colspan="15"><div class="fixsel">
+                        <input type="submit" class="btn" name="mailcheck" value="检测邮件发送设置" onclick="this.form.action = '${WEB_ROOT}/admin/email';
+                                this.form.target = 'mailcheckiframe'">
+                        &nbsp; &nbsp;
+                        <iframe name="mailcheckiframe" style="display: none"></iframe>
+                    </div></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!--{include admin/footer}-->
