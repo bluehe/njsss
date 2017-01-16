@@ -146,39 +146,62 @@
                             </div>
                         </div>
                         <div class="box-body ">
-                            <?php if($forum[mold]=='sig'){?>
                             <?php if(is_array($forum[f])){foreach($forum[f] AS $index=>$brooms) { ?>
                             <div class="floor">
                                 <div class="col-md-1 col-xs-2 text-center clearspace"><?php echo $floornames[$index]; ?></div>
                                 <div class="col-md-11 col-xs-10">
                                     <?php if(is_array($brooms)){foreach($brooms AS $broom) { ?>
-
+                                    <?php if($forum[mold]=='sig'){?>
                                     <div class="col-md-1 col-xs-3 clearspace text-center">
-                                        <div class="broom <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''; ?>" data-toggle="dropdown">
+                                        <div class="sroom <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''; ?>" data-toggle="dropdown">
                                             <h4 class="text_ellipsis"><?php echo $broom[broom]; ?></h4>
                                             <i class="fa"><?php echo count($broom[order]); ?>/<?php echo $broom[bed_num]; ?></i>
-
                                         </div>
                                         <div class="dropdown-menu">
                                             <?php if(is_array($broom[bed])){foreach($broom[bed] AS $bed) { ?>
                                             <div data-id="<?php echo $bed[id]; ?>" class="bed <?php echo array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'; ?>"><?php echo $bed[bed]; ?></div>
+                                            <?php }}?>
+                                        </div>
+                                    </div>
+                                    <?php } else { ?>
+                                    <div class="col-md-<?php echo count($broom[sroom]); ?> col-xs-<?php echo count($broom[sroom])*3; ?> clearspace">
+                                        <div class="broom row clearspace text-center ">
+                                            <h4 class="text_ellipsis col-xs-12 <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''; ?>"><?php echo $broom[broom]; ?></h4>
+                                            <?php if(is_array($broom[sroom])){foreach($broom[sroom] AS $sroom) { ?>
+                                            <div class="col-xs-<?php echo 12/count($broom[sroom]); ?> clearspace text-center">
+                                                <div class="sroom <?php echo count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):''; ?>">
+                                                    <div data-toggle="dropdown">
+                                                        <h4 class="text_ellipsis"><?php echo $sroom[sroom]; ?></h4>
+                                                        <i class="fa"><?php echo count($sroom[order]); ?>/<?php echo $sroom[bed_num]; ?></i>
+                                                    </div>
+                                                    <div class="dropdown-menu">
+                                                        <?php if(is_array($sroom[bed])){foreach($sroom[bed] AS $bed) { ?>
+                                                        <div data-id="<?php echo $bed[id]; ?>" class="bed <?php echo array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'; ?>"><?php echo $bed[bed]; ?></div>
 
+                                                        <?php }}?>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <?php }}?>
 
                                         </div>
 
-                                    </div>
 
+                                    </div>
+                                    <?php }?>
                                     <?php }}?>
                                 </div>
                             </div>
                             <?php }}?>
-                            <?php } else { ?>
-                            <?php }?>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
+                            <?php if($forum[mold]=='sig'){?>
                             <span class="label label-primary">房间数：<?php echo $forum[total_broom]; ?></span>
+                            <?php } else { ?>
+                            <span class="label label-primary">套间数：<?php echo $forum[total_broom]; ?></span>
+                            <span class="label label-primary">小室数：<?php echo $forum[total_sroom]; ?></span>
+                            <?php }?>
                             <span class="label label-info">床位数：<?php echo $forum[total_bed]; ?></span>
                             <span class="label label-warning">入住数：<?php echo $forum[check_bed]; ?></span>
                         </div>

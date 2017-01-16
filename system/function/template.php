@@ -34,7 +34,7 @@ function __parse($tFile, $cFile) {
     }, $fileContent);
     $fileContent = preg_replace("/\<\!\-\-\s*\{else\}\s*\-\-\>/is", "<?php } else { ?>", $fileContent);
 
-    for ($i = 0; $i < 5; ++$i) {
+    for ($i = 0; $i < 6; ++$i) {
         $fileContent = preg_replace_callback("/\<\!\-\-\s*\{loop\s+(\S+)\s+(\S+)\s+(\S+)\s*\}\s*\-\-\>(.+?)\<\!\-\-\s*\{\/loop\}\s*\-\-\>/is", function($r) {
             return __replace('<?php if(is_array(' . $r[1] . ')){foreach(' . $r[1] . ' AS ' . $r[2] . '=>' . $r[3] . ') { ?>' . $r[4] . '<?php }}?>');
         }, $fileContent);

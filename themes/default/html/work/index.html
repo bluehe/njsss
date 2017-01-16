@@ -146,39 +146,62 @@
                             </div>
                         </div>
                         <div class="box-body ">
-                            <!--{if $forum[mold]=='sig'}-->
                             <!--{loop $forum[f] $index $brooms}-->
                             <div class="floor">
                                 <div class="col-md-1 col-xs-2 text-center clearspace">{$floornames[$index]}</div>
                                 <div class="col-md-11 col-xs-10">
                                     <!--{loop $brooms $broom}-->
-
+                                    <!--{if $forum[mold]=='sig'}-->
                                     <div class="col-md-1 col-xs-3 clearspace text-center">
-                                        <div class="broom ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
+                                        <div class="sroom ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
                                             <h4 class="text_ellipsis">{$broom[broom]}</h4>
                                             <i class="fa">${count($broom[order])}/{$broom[bed_num]}</i>
-
                                         </div>
                                         <div class="dropdown-menu">
                                             <!--{loop $broom[bed] $bed}-->
                                             <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
+                                            <!--{/loop}-->
+                                        </div>
+                                    </div>
+                                    <!--{else}-->
+                                    <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
+                                        <div class="broom row clearspace text-center ">
+                                            <h4 class="text_ellipsis col-xs-12 ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}">{$broom[broom]}</h4>
+                                            <!--{loop $broom[sroom] $sroom}-->
+                                            <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
+                                                <div class="sroom ${count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):''}">
+                                                    <div data-toggle="dropdown">
+                                                        <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
+                                                        <i class="fa">${count($sroom[order])}/{$sroom[bed_num]}</i>
+                                                    </div>
+                                                    <div class="dropdown-menu">
+                                                        <!--{loop $sroom[bed] $bed}-->
+                                                        <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
 
+                                                        <!--{/loop}-->
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!--{/loop}-->
 
                                         </div>
 
-                                    </div>
 
+                                    </div>
+                                    <!--{/if}-->
                                     <!--{/loop}-->
                                 </div>
                             </div>
                             <!--{/loop}-->
-                            <!--{else}-->
-                            <!--{/if}-->
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
+                            <!--{if $forum[mold]=='sig'}-->
                             <span class="label label-primary">房间数：{$forum[total_broom]}</span>
+                            <!--{else}-->
+                            <span class="label label-primary">套间数：{$forum[total_broom]}</span>
+                            <span class="label label-primary">小室数：{$forum[total_sroom]}</span>
+                            <!--{/if}-->
                             <span class="label label-info">床位数：{$forum[total_bed]}</span>
                             <span class="label label-warning">入住数：{$forum[check_bed]}</span>
                         </div>
