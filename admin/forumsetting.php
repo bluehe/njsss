@@ -22,6 +22,16 @@ if ($forum) {
                 adminmessage('3', '床位删除过程中出现错误', '/forumsetting?fid=' . $fid, true, 3);
             }
         }
+        
+         if ($_POST['bidarray'] != "") {
+            adminmessage('3', '<form method="post" action="/admin/forumsetting?fid=' . $fid . '">
+						 <input type="hidden"  name="forumbeds" value="' . implode(",", $_POST['bidarray']) . '"  />
+						 <input type="hidden"  name="statue" value="ok"  /><br />
+						 <h4 class="marginbot normal"><strong>本操作不可恢复，您确定要删除这些床位吗？</strong><br /></h4><br />
+						 <p class="margintop">
+						 <input type="submit" class="btn" name="confirmed" value="确定">&nbsp;&nbsp;
+						 <input type="button" class="btn" value="取消" onclick="history.go(-1);"></p></form>', false);
+        }
 
         $f = array();
         $res1 = 1;
@@ -105,15 +115,7 @@ if ($forum) {
             adminmessage('2', '楼苑更改成功。', '/admin/forumsetting?fid=' . $fid, true, 3);
         }
 
-        if ($_POST['bidarray'] != "") {
-            adminmessage('3', '<form method="post" action="/admin/forumsetting?fid=' . $fid . '">
-						 <input type="hidden"  name="forumbeds" value="' . implode(",", $_POST['bidarray']) . '"  />
-						 <input type="hidden"  name="statue" value="ok"  /><br />
-						 <h4 class="marginbot normal"><strong>本操作不可恢复，您确定要删除这些床位吗？</strong><br /></h4><br />
-						 <p class="margintop">
-						 <input type="submit" class="btn" name="confirmed" value="确定">&nbsp;&nbsp;
-						 <input type="button" class="btn" value="取消" onclick="history.go(-1);"></p></form>', false);
-        }
+       
     }
 
 

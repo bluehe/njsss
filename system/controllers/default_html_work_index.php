@@ -153,33 +153,54 @@
                                     <?php if(is_array($brooms)){foreach($brooms AS $broom) { ?>
                                     <?php if($forum[mold]=='sig'){?>
                                     <div class="col-md-1 col-xs-3 clearspace text-center">
+                                        <?php if($broom[bed][0][stat]==1){?>
                                         <div class="sroom <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''; ?>" data-toggle="dropdown">
                                             <h4 class="text_ellipsis"><?php echo $broom[broom]; ?></h4>
                                             <i class="fa"><?php echo count($broom[order]); ?>/<?php echo $broom[bed_num]; ?></i>
                                         </div>
                                         <div class="dropdown-menu">
                                             <?php if(is_array($broom[bed])){foreach($broom[bed] AS $bed) { ?>
+                                            <?php if($bed[stat]==1){?>
                                             <div data-id="<?php echo $bed[id]; ?>" class="bed <?php echo array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'; ?>"><?php echo $bed[bed]; ?></div>
+                                            <?php } else { ?>
+                                            <div data-id="<?php echo $bed[id]; ?>" class="bed label-primary"><?php echo $bed[note]; ?></div>
+                                            <?php }?>
                                             <?php }}?>
                                         </div>
+                                        <?php } else { ?>
+                                        <div class="sroom label-primary">
+                                            <h4 class="text_ellipsis"><?php echo $broom[broom]; ?></h4>
+                                            <i class="fa"><?php echo $broom[bed][0][note]; ?></i>
+                                        </div>
+                                        <?php }?>
                                     </div>
                                     <?php } else { ?>
                                     <div class="col-md-<?php echo count($broom[sroom]); ?> col-xs-<?php echo count($broom[sroom])*3; ?> clearspace">
                                         <div class="broom row clearspace text-center ">
-                                            <h4 class="text_ellipsis col-xs-12 <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''; ?>"><?php echo $broom[broom]; ?></h4>
+                                            <h4 class="text_ellipsis col-xs-12 <?php echo count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):($broom[sroom][0][bed][0][stat]==1?'':'label-primary'); ?>"><?php echo $broom[broom]; ?></h4>
                                             <?php if(is_array($broom[sroom])){foreach($broom[sroom] AS $sroom) { ?>
                                             <div class="col-xs-<?php echo 12/count($broom[sroom]); ?> clearspace text-center">
-                                                <div class="sroom <?php echo count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):''; ?>">
+                                                <div class="sroom <?php echo count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[bed][0][stat]==1?'':'label-primary'); ?>">
+                                                    <?php if($sroom[bed][0][stat]==1){?>
                                                     <div data-toggle="dropdown">
                                                         <h4 class="text_ellipsis"><?php echo $sroom[sroom]; ?></h4>
                                                         <i class="fa"><?php echo count($sroom[order]); ?>/<?php echo $sroom[bed_num]; ?></i>
                                                     </div>
                                                     <div class="dropdown-menu">
                                                         <?php if(is_array($sroom[bed])){foreach($sroom[bed] AS $bed) { ?>
+                                                        <?php if($bed[stat]==1){?>
                                                         <div data-id="<?php echo $bed[id]; ?>" class="bed <?php echo array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'; ?>"><?php echo $bed[bed]; ?></div>
-
+                                                        <?php } else { ?>
+                                                        <div data-id="<?php echo $bed[id]; ?>" class="bed label-primary"><?php echo $bed[note]; ?></div>
+                                                        <?php }?>
                                                         <?php }}?>
                                                     </div>
+                                                    <?php } else { ?>
+                                                    <div>
+                                                        <h4 class="text_ellipsis"><?php echo $sroom[sroom]; ?></h4>
+                                                        <i class="fa"><?php echo $sroom[bed][0][note]; ?></i>
+                                                    </div>
+                                                    <?php }?>
                                                 </div>
                                             </div>
                                             <?php }}?>
@@ -219,9 +240,9 @@
 
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-                    <b>Version</b> 2.3.8
+                    <b>Version</b> 3.0.1 Beta
                 </div>
-                <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights
                 reserved.
             </footer>
 

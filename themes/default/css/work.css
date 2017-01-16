@@ -51,7 +51,7 @@
     margin:0 2px 4px 2px;
     background: #ecf0f5;
 }
-.broom>h4{margin: 0;padding: 8px 0;}
+.broom>h4{margin: 0;padding: 8px 0;border:1px solid #f4f4f4;}
 .sroom{
     border:1px solid #f4f4f4;
     background: #ecf0f5;
