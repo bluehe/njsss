@@ -5,8 +5,8 @@ $INI = array(
     'db' =>
     array(
         'host' => 'localhost',
-        'user' => 'easyscm',
-        'pass' => 'easyscm1123',
+        'user' => 'root',
+        'pass' => '',
         'name' => 'ss',
         'pre' => '',
     ),
