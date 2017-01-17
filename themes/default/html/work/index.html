@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 2 | Blank Page</title>
+        <title>${$nav['title']?$nav['title'].'_':''}{$INI['system']['sitetitle']}</title>
+        <meta name="keywords" content="${$nav['keywords']?$nav['keywords']:$INI['system']['keywords']}" />
+        <meta name="description" content="${$nav['description']?$nav['description']:$INI['system']['description']}" />
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -240,10 +242,9 @@
 
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-                    <b>Version</b> 3.0.1 Beta
+                    <b>Version</b> DMS {$INI['system']['version']}
                 </div>
-                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights
-                reserved.
+                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights reserved.
             </footer>
 
 

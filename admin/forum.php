@@ -107,7 +107,7 @@ $builds = DB::LimitQuery('forum', array('condition' => array('type' => 'building
 
 //楼层
 $floornames = DB::LimitQuery('parameter', array('condition' => array('name' => 'floorname'),
-            'order' => 'ORDER BY k ASC',
+            'order' => 'ORDER BY CAST(k as SIGNED) ASC',
         ));
 include template('admin/forum');
 ?>
