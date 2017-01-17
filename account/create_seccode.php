@@ -8,7 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/loader.php');
 $length = $INI['system']['seccode_length'];
 $vcode = new Vcode();
 $vcode->setLength($length);
-$vcode->setBgColor('#ff9900');
+$vcode->setBgColor('#3c8dbc');
 $vcode->setFontColor('#ffffff');
 $vcode->setDotNoise(0);
 $vcode->setLineNoise(0);

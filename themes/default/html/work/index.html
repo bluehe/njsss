@@ -1,269 +1,240 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>${$nav['title']?$nav['title'].'_':''}{$INI['system']['sitetitle']}</title>
-        <meta name="keywords" content="${$nav['keywords']?$nav['keywords']:$INI['system']['keywords']}" />
-        <meta name="description" content="${$nav['description']?$nav['description']:$INI['system']['description']}" />
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <!-- Bootstrap 3.3.6 -->
-        <link rel="stylesheet" href="${WEB_ROOT}/themes/bootstrap/css/bootstrap.min.css">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!-- Ionicons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-        <!-- Theme style -->
-        <link rel="stylesheet" href="${WEB_ROOT}/themes/dist/css/AdminLTE.min.css">
-        <!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
-        <link rel="stylesheet" href="${WEB_ROOT}/themes/dist/css/skins/_all-skins.min.css">
-        <link rel="stylesheet" href="${WEB_ROOT}/themes/default/css/work.css">
+<!--{include html_header_lte}-->
+<body class="hold-transition skin-blue-light sidebar-mini fixed">
+    <!-- Site wrapper -->
+    <div class="wrapper">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    <body class="hold-transition skin-blue-light sidebar-mini fixed">
-        <!-- Site wrapper -->
-        <div class="wrapper">
-
-            <header class="main-header">
-                <!-- Logo -->
-                <a href="${WEB_ROOT}/" class="logo">
-                    <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini">DMS</span>
-                    <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg">{$INI['system']['sitename']}</span>
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="${WEB_ROOT}/" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini">DMS</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg">{$INI['system']['sitename']}</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </a>
-                <!-- Header Navbar: style can be found in header.less -->
-                <nav class="navbar navbar-static-top">
-                    <!-- Sidebar toggle button-->
-                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                        <span class="sr-only">切换导航</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
 
-                    <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
 
 
-                            <!-- User Account: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="${WEB_ROOT}/themes/dist/img/user.png" class="user-image" alt="用户头像">
-                                    <span class="hidden-xs">{$login_user['username']}</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        <img src="${WEB_ROOT}/themes/dist/img/user.png" class="img-circle" alt="用户头像">
-                                        <p>{$login_user['username']}</p>
-                                    </li>
-
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-
-                                        <div class="text-center">
-                                            <a href="/account/logout" class="btn btn-default btn-flat">退出</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- Control Sidebar Toggle Button -->
-                            <!--                            <li>
-                                                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                                                        </li>-->
-                        </ul>
-                    </div>
-                </nav>
-            </header>
-
-            <!-- =============================================== -->
-
-            <!-- Left side column. contains the sidebar -->
-            <aside class="main-sidebar">
-                <!-- sidebar: style can be found in sidebar.less -->
-                <section class="sidebar">
-
-                    <!-- sidebar menu: : style can be found in sidebar.less -->
-                    <ul class="sidebar-menu">
-                        <!--{loop $courts $court}-->
-                        <li class="treeview active">
-                            <a href="#">
-                                <i class="fa fa-building"></i> <span>{$court[name]}</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="${WEB_ROOT}/themes/dist/img/user.png" class="user-image" alt="用户头像">
+                                <span class="hidden-xs">{$login_user['username']}</span>
                             </a>
-                            <ul class="treeview-menu">
-                                <!--{loop $court[forum] $forum}-->
-                                <li>
-                                    <a href="#forum_{$forum[id]}">
-                                        <i class="fa fa-building-o"></i> {$forum[name]}
-                                        <span class="pull-right-container">
-                                            <span class="label label-primary pull-right">${$forum[roomtype]=='train'?'培训宿舍':($forum[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>
-                                        </span>
-                                    </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="${WEB_ROOT}/themes/dist/img/user.png" class="img-circle" alt="用户头像">
+                                    <p>{$login_user['username']}</p>
                                 </li>
-                                <!--{/loop}-->
 
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+
+                                    <div class="text-center">
+                                        <a href="/account/logout" class="btn btn-default btn-flat">退出</a>
+                                    </div>
+                                </li>
                             </ul>
                         </li>
-                        <!--{/loop}-->
-
+                        <!-- Control Sidebar Toggle Button -->
+                        <!--                            <li>
+                                                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                                    </li>-->
                     </ul>
-                </section>
-                <!-- /.sidebar -->
-            </aside>
+                </div>
+            </nav>
+        </header>
 
-            <!-- =============================================== -->
+        <!-- =============================================== -->
 
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
-                <!--{loop $courts $court}-->
-                <!-- Content Header (Page header) -->
-                <section class="content-header" id="court_{$court[id]}">
-                    <h1>{$court[name]}</h1>
-                </section>
+        <!-- Left side column. contains the sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
 
-                <!-- Main content -->
-                <section class="content">
-                    <!--{loop $court[forum] $forum}-->
-                    <!-- Default box -->
-                    <a class="target-fix" name="forum_{$forum[id]}"></a>
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title mr20">{$forum[name]}</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="收缩">
-                                    <i class="fa fa-minus"></i></button>
-
-                            </div>
-                        </div>
-                        <div class="box-body ">
-                            <!--{loop $forum[f] $index $brooms}-->
-                            <div class="floor">
-                                <div class="col-md-1 col-xs-2 text-center clearspace">{$floornames[$index]}</div>
-                                <div class="col-md-11 col-xs-10">
-                                    <!--{loop $brooms $broom}-->
-                                    <!--{if $forum[mold]=='sig'}-->
-                                    <div class="col-md-1 col-xs-3 clearspace text-center">
-                                        <!--{if $broom[bed][0][stat]==1}-->
-                                        <div class="sroom ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
-                                            <h4 class="text_ellipsis">{$broom[broom]}</h4>
-                                            <i class="fa">${count($broom[order])}/{$broom[bed_num]}</i>
-                                        </div>
-                                        <div class="dropdown-menu">
-                                            <!--{loop $broom[bed] $bed}-->
-                                            <!--{if $bed[stat]==1}-->
-                                            <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
-                                            <!--{else}-->
-                                            <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
-                                            <!--{/if}-->
-                                            <!--{/loop}-->
-                                        </div>
-                                        <!--{else}-->
-                                        <div class="sroom label-primary">
-                                            <h4 class="text_ellipsis">{$broom[broom]}</h4>
-                                            <i class="fa">{$broom[bed][0][note]}</i>
-                                        </div>
-                                        <!--{/if}-->
-                                    </div>
-                                    <!--{else}-->
-                                    <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
-                                        <div class="broom row clearspace text-center ">
-                                            <h4 class="text_ellipsis col-xs-12 ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):($broom[sroom][0][bed][0][stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
-                                            <!--{loop $broom[sroom] $sroom}-->
-                                            <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
-                                                <div class="sroom ${count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[bed][0][stat]==1?'':'label-primary')}">
-                                                    <!--{if $sroom[bed][0][stat]==1}-->
-                                                    <div data-toggle="dropdown">
-                                                        <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
-                                                        <i class="fa">${count($sroom[order])}/{$sroom[bed_num]}</i>
-                                                    </div>
-                                                    <div class="dropdown-menu">
-                                                        <!--{loop $sroom[bed] $bed}-->
-                                                        <!--{if $bed[stat]==1}-->
-                                                        <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
-                                                        <!--{else}-->
-                                                        <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
-                                                        <!--{/if}-->
-                                                        <!--{/loop}-->
-                                                    </div>
-                                                    <!--{else}-->
-                                                    <div>
-                                                        <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
-                                                        <i class="fa">{$sroom[bed][0][note]}</i>
-                                                    </div>
-                                                    <!--{/if}-->
-                                                </div>
-                                            </div>
-                                            <!--{/loop}-->
-
-                                        </div>
-
-
-                                    </div>
-                                    <!--{/if}-->
-                                    <!--{/loop}-->
-                                </div>
-                            </div>
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu">
+                    <!--{loop $courts $court}-->
+                    <li class="treeview active">
+                        <a href="#">
+                            <i class="fa fa-building"></i> <span>{$court[name]}</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <!--{loop $court[forum] $forum}-->
+                            <li>
+                                <a href="#forum_{$forum[id]}">
+                                    <i class="fa fa-building-o"></i> {$forum[name]}
+                                    <span class="pull-right-container">
+                                        <span class="label label-primary pull-right">${$forum[roomtype]=='train'?'培训宿舍':($forum[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>
+                                    </span>
+                                </a>
+                            </li>
                             <!--{/loop}-->
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer">
-                            <!--{if $forum[mold]=='sig'}-->
-                            <span class="label label-primary">房间数：{$forum[total_broom]}</span>
-                            <!--{else}-->
-                            <span class="label label-primary">套间数：{$forum[total_broom]}</span>
-                            <span class="label label-primary">小室数：{$forum[total_sroom]}</span>
-                            <!--{/if}-->
-                            <span class="label label-info">床位数：{$forum[total_bed]}</span>
-                            <span class="label label-warning">入住数：{$forum[check_bed]}</span>
-                        </div>
-                        <!-- /.box-footer-->
-                    </div>
-                    <!-- /.box -->
+
+                        </ul>
+                    </li>
                     <!--{/loop}-->
 
-                </section>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
 
-                <!-- /.content -->
-                <!--{/loop}-->
-            </div>
-            <!-- /.content-wrapper -->
+        <!-- =============================================== -->
 
-            <footer class="main-footer">
-                <div class="pull-right hidden-xs">
-                    <b>Version</b> DMS {$INI['system']['version']}
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!--{loop $courts $court}-->
+            <!-- Content Header (Page header) -->
+            <section class="content-header" id="court_{$court[id]}">
+                <h1>{$court[name]}</h1>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <!--{loop $court[forum] $forum}-->
+                <!-- Default box -->
+                <a class="target-fix" name="forum_{$forum[id]}"></a>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title mr20">{$forum[name]}</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="收缩">
+                                <i class="fa fa-minus"></i></button>
+
+                        </div>
+                    </div>
+                    <div class="box-body ">
+                        <!--{loop $forum[f] $index $brooms}-->
+                        <div class="floor">
+                            <div class="col-md-1 col-xs-2 text-center clearspace">{$floornames[$index]}</div>
+                            <div class="col-md-11 col-xs-10">
+                                <!--{loop $brooms $broom}-->
+                                <!--{if $forum[mold]=='sig'}-->
+                                <div class="col-md-1 col-xs-3 clearspace text-center">
+                                    <!--{if $broom[bed][0][stat]==1}-->
+                                    <div class="sroom ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
+                                        <h4 class="text_ellipsis">{$broom[broom]}</h4>
+                                        <i class="fa">${count($broom[order])}/{$broom[bed_num]}</i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <!--{loop $broom[bed] $bed}-->
+                                        <!--{if $bed[stat]==1}-->
+                                        <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
+                                        <!--{else}-->
+                                        <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
+                                        <!--{/if}-->
+                                        <!--{/loop}-->
+                                    </div>
+                                    <!--{else}-->
+                                    <div class="sroom label-primary">
+                                        <h4 class="text_ellipsis">{$broom[broom]}</h4>
+                                        <i class="fa">{$broom[bed][0][note]}</i>
+                                    </div>
+                                    <!--{/if}-->
+                                </div>
+                                <!--{else}-->
+                                <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
+                                    <div class="broom row clearspace text-center ">
+                                        <h4 class="text_ellipsis col-xs-12 ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):($broom[sroom][0][bed][0][stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
+                                        <!--{loop $broom[sroom] $sroom}-->
+                                        <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
+                                            <div class="sroom ${count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[bed][0][stat]==1?'':'label-primary')}">
+                                                <!--{if $sroom[bed][0][stat]==1}-->
+                                                <div data-toggle="dropdown">
+                                                    <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
+                                                    <i class="fa">${count($sroom[order])}/{$sroom[bed_num]}</i>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <!--{loop $sroom[bed] $bed}-->
+                                                    <!--{if $bed[stat]==1}-->
+                                                    <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
+                                                    <!--{else}-->
+                                                    <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
+                                                    <!--{/if}-->
+                                                    <!--{/loop}-->
+                                                </div>
+                                                <!--{else}-->
+                                                <div>
+                                                    <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
+                                                    <i class="fa">{$sroom[bed][0][note]}</i>
+                                                </div>
+                                                <!--{/if}-->
+                                            </div>
+                                        </div>
+                                        <!--{/loop}-->
+
+                                    </div>
+
+
+                                </div>
+                                <!--{/if}-->
+                                <!--{/loop}-->
+                            </div>
+                        </div>
+                        <!--{/loop}-->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <!--{if $forum[mold]=='sig'}-->
+                        <span class="label label-primary">房间数：{$forum[total_broom]}</span>
+                        <!--{else}-->
+                        <span class="label label-primary">套间数：{$forum[total_broom]}</span>
+                        <span class="label label-primary">小室数：{$forum[total_sroom]}</span>
+                        <!--{/if}-->
+                        <span class="label label-info">床位数：{$forum[total_bed]}</span>
+                        <span class="label label-warning">入住数：{$forum[check_bed]}</span>
+                    </div>
+                    <!-- /.box-footer-->
                 </div>
-                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights reserved.
-            </footer>
+                <!-- /.box -->
+                <!--{/loop}-->
 
+            </section>
 
-
+            <!-- /.content -->
+            <!--{/loop}-->
         </div>
-        <!-- ./wrapper -->
+        <!-- /.content-wrapper -->
 
-        <!-- jQuery 2.2.3 -->
-        <script src="${WEB_ROOT}/themes/plugins/jQuery/jquery-2.2.3.min.js"></script>
-        <!-- Bootstrap 3.3.6 -->
-        <script src="${WEB_ROOT}/themes/bootstrap/js/bootstrap.min.js"></script>
-        <!-- SlimScroll -->
-        <script src="${WEB_ROOT}/themes/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-        <!-- FastClick -->
-        <script src="${WEB_ROOT}/themes/plugins/fastclick/fastclick.js"></script>
-        <!-- AdminLTE App -->
-        <script src="${WEB_ROOT}/themes/dist/js/app.min.js"></script>
-        <!-- AdminLTE for demo purposes -->
-        <script src="${WEB_ROOT}/themes/dist/js/demo.js"></script>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> DMS {$INI['system']['version']}
+            </div>
+            <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights reserved.
+        </footer>
 
-    </body>
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery 2.2.3 -->
+    <script src="${WEB_ROOT}/themes/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="${WEB_ROOT}/themes/bootstrap/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="${WEB_ROOT}/themes/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="${WEB_ROOT}/themes/plugins/fastclick/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="${WEB_ROOT}/themes/dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="${WEB_ROOT}/themes/dist/js/demo.js"></script>
+
+</body>
 </html>
