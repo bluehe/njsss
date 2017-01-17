@@ -568,7 +568,6 @@ h3 {
 }
 * html .floattop {
     position:relative;
-    //top:expression(offsetParent ? offsetParent.scrollTop : 0);
     left: 0;
     margin-top: -10px;
     width: 100%;

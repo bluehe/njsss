@@ -242,8 +242,10 @@
                 <div class="pull-right hidden-xs">
                     <b>Version</b> 3.0.1 Beta
                 </div>
-                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights
-                reserved.
+                <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights reserved.
+                <?php if($INI['system']['forum_statcode']!=""){?>
+                <span><?php echo $INI['system']['forum_statcode']; ?></span>
+                <?php }?>
             </footer>
 
 
