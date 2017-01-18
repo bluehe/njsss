@@ -126,15 +126,15 @@
                                 <!--{loop $brooms $broom}-->
                                 <!--{if $forum[mold]=='sig'}-->
                                 <div class="col-md-1 col-xs-3 clearspace text-center">
-                                    <!--{if $broom[bed][0][stat]==1}-->
-                                    <div class="sroom ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
+                                    <!--{if $broom[stat]==1}-->
+                                    <div class="sroom ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
                                         <h4 class="text_ellipsis">{$broom[broom]}</h4>
-                                        <i class="fa">${count($broom[order])}/{$broom[bed_num]}</i>
+                                        <i class="fa">{$broom[check_bed]}/{$broom[bed_num]}</i>
                                     </div>
                                     <div class="dropdown-menu">
                                         <!--{loop $broom[bed] $bed}-->
                                         <!--{if $bed[stat]==1}-->
-                                        <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$broom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
+                                        <div data-id="{$bed[id]}" class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}</div>
                                         <!--{else}-->
                                         <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
                                         <!--{/if}-->
@@ -150,19 +150,19 @@
                                 <!--{else}-->
                                 <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
                                     <div class="broom row clearspace text-center ">
-                                        <h4 class="text_ellipsis col-xs-12 ${count($broom[order])>0?(count($broom[order])==$broom[bed_num]?'label-danger':'label-warning'):($broom[sroom][0][bed][0][stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
+                                        <h4 class="text_ellipsis col-xs-12 ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):($broom[stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
                                         <!--{loop $broom[sroom] $sroom}-->
                                         <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
-                                            <div class="sroom ${count($sroom[order])>0?(count($sroom[order])==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[bed][0][stat]==1?'':'label-primary')}">
-                                                <!--{if $sroom[bed][0][stat]==1}-->
+                                            <div class="sroom ${$sroom[check_bed]>0?($sroom[check_bed]==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[stat]==1?'':'label-primary')}">
+                                                <!--{if $sroom[stat]==1}-->
                                                 <div data-toggle="dropdown">
                                                     <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
-                                                    <i class="fa">${count($sroom[order])}/{$sroom[bed_num]}</i>
+                                                    <i class="fa">{$sroom[check_bed]}/{$sroom[bed_num]}</i>
                                                 </div>
                                                 <div class="dropdown-menu">
                                                     <!--{loop $sroom[bed] $bed}-->
                                                     <!--{if $bed[stat]==1}-->
-                                                    <div data-id="{$bed[id]}" class="bed ${array_key_exists($bed[id],$sroom[order])?'label-danger':'label-success'}">{$bed[bed]}</div>
+                                                    <div data-id="{$bed[id]}" class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}</div>
                                                     <!--{else}-->
                                                     <div data-id="{$bed[id]}" class="bed label-primary">{$bed[note]}</div>
                                                     <!--{/if}-->
@@ -179,8 +179,6 @@
                                         <!--{/loop}-->
 
                                     </div>
-
-
                                 </div>
                                 <!--{/if}-->
                                 <!--{/loop}-->
