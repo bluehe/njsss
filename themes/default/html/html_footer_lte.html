@@ -1,0 +1,75 @@
+
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> DMS {$INI['system']['version']}
+    </div>
+    <strong>Copyright &copy; 2010-2017 <a href="#">何文斌</a>.</strong> All rights reserved.
+    <!--{if $INI['system']['forum_statcode']!=""}-->
+    <span>{$INI['system']['forum_statcode']}</span>
+    <!--{/if}-->
+</footer>
+
+
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.3 -->
+<script src="${WEB_ROOT}/themes/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="${WEB_ROOT}/themes/bootstrap/js/bootstrap.min.js"></script>
+<script src="${WEB_ROOT}/themes/default/js/toastr.min.js"></script>
+<!-- SlimScroll -->
+<script src="${WEB_ROOT}/themes/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- Select2 -->
+<script src="${WEB_ROOT}/themes/plugins/select2/select2.full.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="${WEB_ROOT}/themes/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- FastClick -->
+<script src="${WEB_ROOT}/themes/plugins/fastclick/fastclick.js"></script>
+
+<!-- AdminLTE App -->
+<script src="${WEB_ROOT}/themes/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="${WEB_ROOT}/themes/dist/js/demo.js"></script>
+
+<!--{if Session::Get('notice',true)}-->
+<script type="text/javascript">
+    var txt = "${Session::Get('message', true)}";
+    var type = "${Session::Get('message_type', true)}";
+    var title = "${Session::Get('title', true)}";
+    if (type == 'error') {
+        toastr.error(txt, title);
+    } else if (type == 'success') {
+        toastr.success(txt, title);
+    } else if (type == 'warning') {
+        toastr.warning(txt, title);
+    } else if (type == 'info') {
+        toastr.info(txt, title);
+    }
+</script>
+<!--{/if}-->
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+    });
+    //Date picker
+    $.fn.datepicker.dates['zh'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+        daysShort: ["日", "一", "二", "三", "四", "五", "六", "日"],
+        daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        monthsShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+        meridiem: ["上午", "下午"],
+        //suffix:      ["st", "nd", "rd", "th"],
+        today: "今天"
+    };
+    $('#datepicker').datepicker({
+        autoclose: true,
+        language: 'zh',
+        format: 'yyyy-mm-dd'
+    });
+</script>
+</body>
+</html>

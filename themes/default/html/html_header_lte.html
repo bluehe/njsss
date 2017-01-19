@@ -11,10 +11,15 @@
         <!-- Bootstrap 3.3.6 -->
         <link rel="stylesheet" href="${WEB_ROOT}/themes/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="${WEB_ROOT}/themes/default/css/toastr.min.css">
+
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- bootstrap datepicker -->
+        <link rel="stylesheet" href="${WEB_ROOT}/themes/plugins/datepicker/datepicker3.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="${WEB_ROOT}/themes/plugins/select2/select2.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="${WEB_ROOT}/themes/dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -31,6 +36,63 @@
         <![endif]-->
         <script type="text/javascript">
             var WEB_ROOT = "${WEB_ROOT}";
-
         </script>
     </head>
+    <body class="hold-transition skin-blue-light sidebar-mini fixed">
+        <!-- Site wrapper -->
+        <div class="wrapper">
+
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="${WEB_ROOT}/" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini">DMS</span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg">{$INI['system']['sitename']}</span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">切换导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+
+
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="${WEB_ROOT}/themes/dist/img/user.png" class="user-image" alt="用户头像">
+                                    <span class="hidden-xs">{$login_user['username']}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="${WEB_ROOT}/themes/dist/img/user.png" class="img-circle" alt="用户头像">
+                                        <p>{$login_user['username']}</p>
+                                    </li>
+
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+
+                                        <div class="text-center">
+                                            <a href="/account/logout" class="btn btn-default btn-flat">退出</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Control Sidebar Toggle Button -->
+                            <!--                            <li>
+                                                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                                                        </li>-->
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- =============================================== -->

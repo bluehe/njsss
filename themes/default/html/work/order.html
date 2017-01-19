@@ -1,0 +1,116 @@
+<!--{include html_header_lte}-->
+
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <!--{loop $courts $court}-->
+            <li class="treeview active">
+                <a href="${WEB_ROOT}/work/index#">
+                    <i class="fa fa-building"></i> <span>{$court[name]}</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <!--{loop $court[forum] $f}-->
+                    <li>
+                        <a href="${WEB_ROOT}/work/index#forum_{$f[id]}">
+                            <i class="fa fa-building-o"></i> {$f[name]}
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">${$f[roomtype]=='train'?'培训宿舍':($f[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>
+                            </span>
+                        </a>
+                    </li>
+                    <!--{/loop}-->
+
+                </ul>
+            </li>
+            <!--{/loop}-->
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>{$court[name]}-{$forum[name]}</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">{$floornames[$bed[floor]]}-{$bed[broom]}${$forum[mold]=='mul'?'-'.$bed[sroom]:''}-{$bed[bed]}</h3>
+            </div>
+            <form id="smtp-form" class="form-horizontal" action="/work/order" method="post">
+                <div class="box-body ">
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住类型</label>
+                        <div class="col-md-4">
+                            <div>
+                                <label class="radio-inline"><input type="radio" name="order[stat]" value="10" checked="checked"> 入住</label>
+                                <label class="radio-inline"><input type="radio" name="order[stat]" value="5" disabled> 预定</label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6"><div class="help-block">暂时未开放预定功能</div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-4">
+                            <select class="form-control select2" multiple="multiple" name="bed[]" style="width: 100%;">
+                                <!--{loop $beds $b}-->
+                                <option ${$b[order_id]?($b[order_id]==$bed[order_id]?'selected':'disabled'):($b[id]==$id?'selected':'')}>{$b[broom]}${$forum[mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
+                                <!--{/loop}-->
+
+                            </select>
+
+                        </div>
+                        <div class="col-md-6"><div class="help-block"></div></div>
+
+                    </div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住日期</label>
+                        <div class="col-md-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker" value="${$order['check_in']?$order['check_in']:date('Y-m-d',time())}">
+                            </div>
+                        </div>
+                        <div class="col-md-6"><div class="help-block"></div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>钥匙数量</label><div class="col-md-4"><input type="text" class="form-control" name="order[key_num]" value="${$order[key_num]?$order[key_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order[checkin_uid]>0&&$order[checkin_uid]!=$login_user_id?'disabled':''}></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label">部门</label><div class="col-md-4"><input type="text" class="form-control" name="order[depart]" value="{$order[depart]}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住人数</label><div class="col-md-4"><input type="text" class="form-control" name="order[check_num]" value="${$order[check_num]?$order[check_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label">备注</label><div class="col-md-4"><textarea class="form-control" name="order[note]" rows="3">{$order[note]}</textarea></div><div class="col-md-6"><div class="help-block"></div></div></div>
+
+                </div>
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="col-md-1 col-md-offset-2 col-xs-6 text-right">
+                        <button type="submit" class="btn btn-primary" name="update-button">保存</button>
+                    </div>
+                    <div class="col-md-1 col-xs-6 text-left">
+                        <a class="btn btn-default" href="javascript:history.go(-1)">返回</a>
+                    </div>
+
+                </div>
+            </form>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+
+
+    </section>
+
+    <!-- /.content -->
+
+</div>
+
+<!--{include html_footer_lte}-->

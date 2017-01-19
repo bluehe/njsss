@@ -121,11 +121,21 @@ button.toast-close-button {
 }
 #toast-container.toast-top-full-width-min>div {
     position:absolute;
-    left:270px;
-    top:105px;
-    right:20px;
+    left:245px;
+    top:50px;
+    right:15px;
     width:auto;
     margin: auto
+}
+@media (max-width: 767px){
+    #toast-container.toast-top-full-width-min>div {
+        position:absolute;
+        left:15px;
+        top:100px;
+        right:15px;
+        width:auto;
+        margin: auto
+    }
 }
 .maincontainer.min~#toast-container.toast-top-full-width-min>div {
     left:20px;
