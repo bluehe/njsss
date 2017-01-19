@@ -73,3 +73,8 @@
     float: left;
     width:32px;
 }
+.alert-warning-person {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
