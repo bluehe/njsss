@@ -24,10 +24,7 @@ if ($form_type == 'order') {
         echo 'error^$^请输入钥匙数量！';
         exit;
     }
-    if ($order['deposit'] == '') {
-        echo 'error^$^请输入入住押金！';
-        exit;
-    }
+
     if ($order['check_in'] == '') {
         echo 'error^$^请选择入住日期！';
         exit;
@@ -77,6 +74,10 @@ if ($form_type == 'order') {
             }
         }
     } else {
+        if ($order['deposit'] == '') {
+            echo 'error^$^请输入入住押金！';
+            exit;
+        }
         $order['checkin_uid'] = $login_user_id;
         $order['created_uid'] = $login_user_id;
         $order['created_at'] = time();
@@ -93,6 +94,41 @@ if ($form_type == 'order') {
         } else {
             echo 'error^$^入住失败！';
         }
+    }
+} elseif ($form_type == 'check_out') {
+    $id = $_POST['id'];
+    $order = $_POST['order'];
+
+    if ($order['check_out'] == '') {
+        echo 'error^$^请选择退房日期！';
+        exit;
+    }
+    if ($order['deposit_out'] == '') {
+        echo 'error^$^请输入退还押金！';
+        exit;
+    }
+    if ($order['charge'] == '') {
+        echo 'error^$^请输入房间费用！';
+        exit;
+    }
+
+    $order['checkout_uid'] = $login_user_id;
+    $order['checkout_time'] = time();
+    $order['stat'] = -10;
+
+    $order_id = DB::Update('order', $id, $order, 'id');
+    if ($order_id) {
+        $result = DB::Update('bed', array('order_id' => $id), array('order_id' => NULL));
+        if ($result) {
+
+            showmessage('success', '', '退房成功！');
+            echo 'redirect^$^' . WEB_ROOT . '/work/index';
+        } else {
+
+            echo 'error^$^退房失败！';
+        }
+    } else {
+        echo 'error^$^退房失败！';
     }
 } else {
     echo 'error|错误操作！';

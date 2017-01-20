@@ -47,7 +47,9 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title" style="line-height: 30px;">{$bed[broom]}${$forum[mold]=='mul'?'-'.$bed[sroom]:''}-{$bed[bed]}</h3>
-                <button type="button" class=" btn btn-warning pull-right btn-sm"><span><i class="fa fa-sign-out"></i> 退房</span></button>
+                <!--{if $order[stat]==10}-->
+                <button type="button" class=" btn btn-warning pull-right btn-sm" data-toggle="modal" data-target="#check_out"><span><i class="fa fa-sign-out"></i> 退房</span></button>
+                <!--{/if}-->
             </div>
             <form id="smtp-form" class="form-horizontal" action="/work/order" method="post">
                 <input type="hidden" name="form_type" value="order" />
@@ -64,7 +66,7 @@
                         <div class="col-md-6"><div class="help-block">暂时未开放预定功能</div></div>
                     </div>
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-4">
-                            <select class="form-control select2" multiple="multiple" name="bid[]">
+                            <select class="form-control select2" multiple="multiple" name="bid[]" style="width: 100%">
                                 <!--{loop $beds $b}-->
                                 <option ${$b[order_id]?($b[order_id]==$bed[order_id]?'selected':'disabled'):($b[id]==$id?'selected':'')} value="{$b[id]}">{$b[broom]}${$forum[mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
                                 <!--{/loop}-->
@@ -77,7 +79,7 @@
                     </div>
 
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>钥匙数量</label><div class="col-md-4"><input type="text" class="form-control" name="order[key_num]" value="${$order[key_num]?$order[key_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
-                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order[checkin_uid]>0&&$order[checkin_uid]!=$login_user_id?'disabled':''}></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order?'disabled':''}></div><div class="col-md-6"><div class="help-block">${$order?'<a href="javascript:;"><i class="fa fa-print"></i> 打印押金单</a>':'入住后不能修改'}</div></div></div>
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住日期</label>
                         <div class="col-md-4">
                             <div class="input-group date">
@@ -130,6 +132,74 @@
     <!-- /.content -->
 
 </div>
+
+<!-- Modal -->
+<!--{if $order}-->
+<div class="modal fade" id="check_out" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">退房【{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}】</h4>
+            </div>
+            <form id="smtp-form" class="form-horizontal" action="#" method="post">
+                <input type="hidden" name="form_type" value="check_out" />
+                <input type="hidden" name="id" value="{$order[id]}" />
+                <div class="modal-body">
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-8">
+                            <select class="form-control select2" multiple="multiple" disabled style="width: 100%">
+                                <!--{loop $beds $b}-->
+                                <option ${$b[order_id]?($b[order_id]==$bed[order_id]?'selected':'disabled'):($b[id]==$id?'selected':'')} value="{$b[id]}">{$b[broom]}${$forum[mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
+                                <!--{/loop}-->
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>退房日期</label>
+                        <div class="col-md-8">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker1" name="order[check_out]" value="${date('Y-m-d',time())}">
+                            </div>
+                        </div>
+                        <input type="hidden" id="datepicker2" value="{$order['check_in']}">
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">入住日期：{$order['check_in']}</div></div>
+
+                    </div>
+
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>退还押金</label><div class="col-md-8"><input type="text" class="form-control" name="order[deposit_out]" id="deposit_out" value="${$order[deposit]?$order[deposit]:'0.00'}"></div>
+
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">入住押金：{$order[deposit]}元</div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>房间费用</label><div class="col-md-8"><input type="text" class="form-control" name="order[charge]" id="charge" value=""></div>
+                        <input type="hidden" id="costroom" value="{$forum[cost_room]}">
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">费用：入住天数*{$forum[cost_room]}元/天</div></div>
+
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label">其他费用</label><div class="col-md-8"><input type="text" class="form-control" name="order[income]" id="income" value=""></div>
+
+                    </div>
+                    <div class="form-group"> <div class="fee"><label class="col-md-3 text-danger control-label" >费用总计</label><div class="col-md-8"><div class="fee-block text-danger"><i class="fa fa-cny"></i>&nbsp;&nbsp;<span id="fee"></span> 元</div></div></div>
+
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label">退房原因</label><div class="col-md-8"><input type="text" class="form-control" name="order[reason]" value=""></div></div>
+                    <div class="form-group"><label class="col-md-3 control-label">退房备注</label><div class="col-md-8"><textarea class="form-control" name="order[checkout_note]" rows="3"></textarea></div></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;"><i class="fa fa-print"></i> 打印退房单</a>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--{/if}-->
 <!-- Select2 -->
 <script src="${WEB_ROOT}/themes/plugins/select2/select2.full.min.js"></script>
 <!-- bootstrap datepicker -->
@@ -139,28 +209,72 @@
         //Initialize Select2 Elements
         $(".select2").select2();
 
-    //Date picker
-    $.fn.datepicker.dates['zh'] = {
-        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-        daysShort: ["日", "一", "二", "三", "四", "五", "六", "日"],
-        daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
-        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        monthsShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-        meridiem: ["上午", "下午"],
-        //suffix:      ["st", "nd", "rd", "th"],
-        today: "今天"
-    };
-    $('#datepicker').datepicker({
+        //Date picker
+        $.fn.datepicker.dates['zh'] = {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+            meridiem: ["上午", "下午"],
+            //suffix:      ["st", "nd", "rd", "th"],
+            today: "今天"
+        };
+        $('#datepicker').datepicker({
             autoclose: true,
             language: 'zh',
             format: 'yyyy-mm-dd'
         });
-    });
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            language: 'zh',
+            format: 'yyyy-mm-dd',
+            startDate: '{$order[check_in]}',
+            endDate: new Date()
+        });
+        $('#datepicker1').change(function() {
+            costroom();
+        });
+        $('#deposit_out,#charge,#income').change(function() {
+            fee();
+        });
+        costroom();
+        function costroom() {
+            var $s_data = $('#datepicker2').val();
+            var $e_data = $('#datepicker1').val();
+            var $cost_room = parseFloat($('#costroom').val());
+            if (isNaN($cost_room)) {
+                $cost_room = 0;
+            }
+            var $cost = $cost_room * DateDiff($s_data, $e_data);
+            if (isNaN($cost)) {
+                $cost = 0;
+            }
+            $('#charge').val($cost.toFixed(2));
+            fee();
 
-    $('#add_person').on('click',function(){
+        }
+        function fee() {
+            var $deposit_out = parseFloat($('#deposit_out').val());
+            var $charge = parseFloat($('#charge').val());
+            var $income = parseFloat($('#income').val());
+            if (isNaN($deposit_out)) {
+                $deposit_out = 0;
+            }
+            if (isNaN($charge)) {
+                $charge = 0;
+            }
+            if (isNaN($income)) {
+                $income = 0;
+            }
+            var $fee = ($income + $charge - $deposit_out).toFixed(2);
+            $('#fee').html($fee);
+        }
+    });
+    $('#add_person').on('click', function() {
         var $id = parseInt($(this).attr('data-id'));
-        $(this).attr('data-id',$id+1);
-        $('#person').append('<div class="alert alert-warning-person alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>人员姓名</label><div class="col-md-4"><input type="text" class="form-control" name="person['+$id+'][name]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>联系电话</label><div class="col-md-4"><input type="text" class="form-control" name="person['+$id+'][tel]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label">身份证号</label><div class="col-md-4"><input type="text" class="form-control" name="person['+$id+'][idcard]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div></div>');
+        $(this).attr('data-id', $id + 1);
+        $('#person').append('<div class="alert alert-warning-person alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>人员姓名</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][name]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>联系电话</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][tel]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label">身份证号</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][idcard]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div></div>');
     });
 
     $('form').on('submit', function(event) {

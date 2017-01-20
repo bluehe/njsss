@@ -122,7 +122,7 @@ button.toast-close-button {
 #toast-container.toast-top-full-width-min>div {
     position:absolute;
     left:245px;
-    top:50px;
+    top:55px;
     right:15px;
     width:auto;
     margin: auto
@@ -131,7 +131,7 @@ button.toast-close-button {
     #toast-container.toast-top-full-width-min>div {
         position:absolute;
         left:15px;
-        top:100px;
+        top:105px;
         right:15px;
         width:auto;
         margin: auto
