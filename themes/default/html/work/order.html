@@ -183,7 +183,7 @@
                     <div class="form-group"><label class="col-md-3 control-label">其他费用</label><div class="col-md-8"><input type="text" class="form-control" name="order[income]" id="income" value=""></div>
 
                     </div>
-                    <div class="form-group"> <div class="fee"><label class="col-md-3 text-danger control-label" >费用总计</label><div class="col-md-8"><div class="fee-block text-danger"><i class="fa fa-cny"></i>&nbsp;&nbsp;<span id="fee"></span> 元</div></div></div>
+                    <div class="form-group"> <div class="fee"><label class="col-md-3 text-danger control-label" >收取费用</label><div class="col-md-8"><div class="fee-block text-danger"><i class="fa fa-cny"></i>&nbsp;&nbsp;<span id="fee"></span> 元</div></div></div>
 
                     </div>
                     <div class="form-group"><label class="col-md-3 control-label">退房原因</label><div class="col-md-8"><input type="text" class="form-control" name="order[reason]" value=""></div></div>
@@ -225,52 +225,8 @@
             language: 'zh',
             format: 'yyyy-mm-dd'
         });
-        $('#datepicker1').datepicker({
-            autoclose: true,
-            language: 'zh',
-            format: 'yyyy-mm-dd',
-            startDate: '{$order[check_in]}',
-            endDate: new Date()
-        });
-        $('#datepicker1').change(function() {
-            costroom();
-        });
-        $('#deposit_out,#charge,#income').change(function() {
-            fee();
-        });
-        costroom();
-        function costroom() {
-            var $s_data = $('#datepicker2').val();
-            var $e_data = $('#datepicker1').val();
-            var $cost_room = parseFloat($('#costroom').val());
-            if (isNaN($cost_room)) {
-                $cost_room = 0;
-            }
-            var $cost = $cost_room * DateDiff($s_data, $e_data);
-            if (isNaN($cost)) {
-                $cost = 0;
-            }
-            $('#charge').val($cost.toFixed(2));
-            fee();
-
-        }
-        function fee() {
-            var $deposit_out = parseFloat($('#deposit_out').val());
-            var $charge = parseFloat($('#charge').val());
-            var $income = parseFloat($('#income').val());
-            if (isNaN($deposit_out)) {
-                $deposit_out = 0;
-            }
-            if (isNaN($charge)) {
-                $charge = 0;
-            }
-            if (isNaN($income)) {
-                $income = 0;
-            }
-            var $fee = ($income + $charge - $deposit_out).toFixed(2);
-            $('#fee').html($fee);
-        }
     });
+
     $('#add_person').on('click', function() {
         var $id = parseInt($(this).attr('data-id'));
         $(this).attr('data-id', $id + 1);
@@ -297,4 +253,56 @@
         });
     });
 </script>
+<!--{if $order}-->
+<script>
+
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        language: 'zh',
+        format: 'yyyy-mm-dd',
+        startDate: '{$order[check_in]}',
+        endDate: new Date()
+    });
+    $('#datepicker1').on('input propertychange', function() {
+        costroom();
+    });
+    $('#deposit_out,#charge,#income').on('input propertychange', function() {
+        fee();
+    });
+    costroom();
+    function costroom() {
+        var $s_data = $('#datepicker2').val();
+        var $e_data = $('#datepicker1').val();
+        var $cost_room = parseFloat($('#costroom').val());
+        if (isNaN($cost_room)) {
+            $cost_room = 0;
+        }
+        var $cost = $cost_room * DateDiff($s_data, $e_data);
+        if (isNaN($cost)) {
+            $cost = 0;
+        }
+        $('#charge').val($cost.toFixed(2));
+        fee();
+
+    }
+    function fee() {
+        var $deposit_out = parseFloat($('#deposit_out').val());
+        var $charge = parseFloat($('#charge').val());
+        var $income = parseFloat($('#income').val());
+        if (isNaN($deposit_out)) {
+            $deposit_out = 0;
+        }
+        if (isNaN($charge)) {
+            $charge = 0;
+        }
+        if (isNaN($income)) {
+            $income = 0;
+        }
+        var $fee = ($income + $charge - $deposit_out).toFixed(2);
+        $('#fee').html($fee);
+    }
+
+</script>
+<!--{/if}-->
 <!--{include html_footer_lte}-->
