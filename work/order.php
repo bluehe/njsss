@@ -24,6 +24,7 @@ if ($court) {
     $order = DB::GetTableRow('order', array('id' => $bed['order_id']));
     if ($order) {
         $persons = json_decode($order['person'], true);
+        $num = DB::Count('bed', array('order_id' => $order['id']));
     } else {
         $persons = array(array());
     }
