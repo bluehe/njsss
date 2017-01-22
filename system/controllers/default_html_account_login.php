@@ -1,22 +1,6 @@
-<?php include template("html_header_lte");?>
+<?php include template("html_header_login");?>
 <body class="hold-transition login-page">
-    <?php if(Session::Get('notice',true)){?>
-    <script type="text/javascript">
-        var txt = "<?php echo Session::Get('message', true); ?>";
-        var type = "<?php echo Session::Get('message_type', true); ?>";
-        var title = "<?php echo Session::Get('title', true); ?>";
 
-        if (type == 'error') {
-            toastr.error(txt, title);
-        } else if (type == 'success') {
-            toastr.success(txt, title);
-        } else if (type == 'warning') {
-            toastr.warning(txt, title);
-        } else if (type == 'info') {
-            toastr.info(txt, title);
-        }
-    </script>
-    <?php }?>
 
     <div class="login-box">
         <div class="login-logo">
@@ -71,8 +55,27 @@
     <script src="<?php echo WEB_ROOT; ?>/themes/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <!-- Bootstrap 3.3.6 -->
     <script src="<?php echo WEB_ROOT; ?>/themes/bootstrap/js/bootstrap.min.js"></script>
-    <script src="<?php echo WEB_ROOT; ?>/themes/default/js/toastr.min.js" type="text/javascript"></script>
-
+    <script src="<?php echo WEB_ROOT; ?>/themes/default/js/toastr.min.js"></script>
+    <?php if(Session::Get('notice',true)){?>
+    <script type="text/javascript">
+        var txt = "<?php echo Session::Get('message', true); ?>";
+        var type = "<?php echo Session::Get('message_type', true); ?>";
+        var title = "<?php echo Session::Get('title', true); ?>";
+        toastr.options = {
+            positionClass: "toast-top-full-width",
+            newestOnTop: true
+        }
+        if (type == 'error') {
+            toastr.error(txt, title);
+        } else if (type == 'success') {
+            toastr.success(txt, title);
+        } else if (type == 'warning') {
+            toastr.warning(txt, title);
+        } else if (type == 'info') {
+            toastr.info(txt, title);
+        }
+    </script>
+    <?php }?>
     <script>
 
         function create_code() {
@@ -110,5 +113,6 @@
             });
         });
     </script>
+
 </body>
 </html>

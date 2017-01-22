@@ -226,6 +226,314 @@
             format: 'yyyy-mm-dd'
         });
     });
+
+    $('#add_person').on('click', function() {
+        var $id = parseInt($(this).attr('data-id'));
+        $(this).attr('data-id', $id + 1);
+        $('#person').append('<div class="alert alert-warning-person alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>人员姓名</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][name]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>联系电话</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][tel]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div><div class="form-group"><label class="col-md-2 control-label">身份证号</label><div class="col-md-4"><input type="text" class="form-control" name="person[' + $id + '][idcard]" value=""></div><div class="col-md-6"><div class="help-block"></div></div></div></div>');
+    });
+
+    $('form').on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: WEB_ROOT + "/work/doform",
+            data: $(this).serialize(),
+            //async: false,
+            success: function(data) {
+                var ss = data.split("^$^");
+                if (ss[0] == 'error') {
+                    toastr.error(ss[1]);
+                } else if (ss[0] == 'success') {
+                    toastr.success(ss[1]);
+                } else if (ss[0] == 'redirect') {
+                    location.href = ss[1];
+                }
+            }
+        });
+    });
+</script>
+<!--{if $order}-->
+<script>
+
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        language: 'zh',
+        format: 'yyyy-mm-dd',
+        startDate: '{$order[check_in]}',
+        endDate: new Date()
+    });
+    $('#datepicker1').on('input propertychange', function() {
+        costroom();
+    });
+    $('#deposit_out,#charge,#income').on('input propertychange', function() {
+        fee();
+    });
+    costroom();
+    function costroom() {
+        var $s_data = $('#datepicker2').val();
+        var $e_data = $('#datepicker1').val();
+        var $cost_room = parseFloat($('#costroom').val());
+        if (isNaN($cost_room)) {
+            $cost_room = 0;
+        }
+        var $cost = $cost_room * DateDiff($s_data, $e_data);
+        if (isNaN($cost)) {
+            $cost = 0;
+        }
+        $('#charge').val($cost.toFixed(2));
+        fee();
+
+    }
+    function fee() {
+        var $deposit_out = parseFloat($('#deposit_out').val());
+        var $charge = parseFloat($('#charge').val());
+        var $income = parseFloat($('#income').val());
+        if (isNaN($deposit_out)) {
+            $deposit_out = 0;
+        }
+        if (isNaN($charge)) {
+            $charge = 0;
+        }
+        if (isNaN($income)) {
+            $income = 0;
+        }
+        var $fee = ($income + $charge - $deposit_out).toFixed(2);
+        $('#fee').html($fee);
+    }
+
+</script>
+<!--{/if}-->
+<!--{include html_footer_lte}-->
+<!--{include html_header_lte}-->
+
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <!--{loop $courts $court}-->
+            <li class="treeview active">
+                <a href="${WEB_ROOT}/work/index#">
+                    <i class="fa fa-building"></i> <span>{$court[name]}</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <!--{loop $court[forum] $f}-->
+                    <li>
+                        <a href="${WEB_ROOT}/work/index#forum_{$f[id]}">
+                            <i class="fa fa-building-o"></i> {$f[name]}
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">${$f[roomtype]=='train'?'培训宿舍':($f[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>
+                            </span>
+                        </a>
+                    </li>
+                    <!--{/loop}-->
+
+                </ul>
+            </li>
+            <!--{/loop}-->
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title" style="line-height: 30px;">{$bed[broom]}${$forum[mold]=='mul'?'-'.$bed[sroom]:''}-{$bed[bed]}</h3>
+                <!--{if $order[stat]==10}-->
+                <button type="button" class=" btn btn-warning pull-right btn-sm" data-toggle="modal" data-target="#check_out"><span><i class="fa fa-sign-out"></i> 退房</span></button>
+                <!--{/if}-->
+            </div>
+            <form id="smtp-form" class="form-horizontal" action="/work/order" method="post">
+                <input type="hidden" name="form_type" value="order" />
+                <input type="hidden" name="id" value="{$id}" />
+                <div class="box-body ">
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住类型</label>
+                        <div class="col-md-4">
+                            <div>
+                                <label class="radio-inline"><input type="radio" name="order[stat]" value="10" checked="checked"> 入住</label>
+                                <label class="radio-inline"><input type="radio" name="order[stat]" value="5" disabled> 预定</label>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6"><div class="help-block">暂时未开放预定功能</div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-4">
+                            <select class="form-control select2" multiple="multiple" name="bid[]" style="width: 100%">
+                                <!--{loop $beds $b}-->
+                                <option ${$b[order_id]?($b[order_id]==$bed[order_id]?'selected':'disabled'):($b[id]==$id?'selected':'')} value="{$b[id]}">{$b[broom]}${$forum[mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
+                                <!--{/loop}-->
+
+                            </select>
+
+                        </div>
+                        <div class="col-md-6"><div class="help-block"></div></div>
+
+                    </div>
+
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>钥匙数量</label><div class="col-md-4"><input type="text" class="form-control" name="order[key_num]" value="${$order[key_num]?$order[key_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order?'disabled':''}></div><div class="col-md-6"><div class="help-block">${$order?'<a href="javascript:;"><i class="fa fa-print"></i> 打印押金单</a>':'入住后不能修改'}</div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住日期</label>
+                        <div class="col-md-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker" name="order[check_in]" value="${$order['check_in']?$order['check_in']:date('Y-m-d',time())}">
+                            </div>
+                        </div>
+                        <div class="col-md-6"><div class="help-block"></div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-2 control-label">单位部门</label><div class="col-md-4"><input type="text" class="form-control" name="order[depart]" value="{$order[depart]}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住人数</label><div class="col-md-4"><input type="text" class="form-control" name="order[check_num]" value="${$order[check_num]?$order[check_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div id="person">
+
+                        <!--{loop $persons $key $person}-->
+                        <div class="alert alert-warning-person alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>人员姓名</label><div class="col-md-4"><input type="text" class="form-control" name="person[{$key}][name]" value="{$person['name']}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                            <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>联系电话</label><div class="col-md-4"><input type="text" class="form-control" name="person[{$key}][tel]" value="{$person['tel']}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                            <div class="form-group"><label class="col-md-2 control-label">身份证号</label><div class="col-md-4"><input type="text" class="form-control" name="person[{$key}][idcard]" value="{$person['idcard']}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                        </div>
+                        <!--{/loop}-->
+
+
+                    </div>
+                    <div class="form-group"><div class="col-md-6 text-center"><a style="cursor:pointer" id="add_person" data-id="${count($persons)}"><i class="fa fa-plus"></i>  添加人员</a></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label">备注</label><div class="col-md-4"><textarea class="form-control" name="order[note]" rows="3">{$order[note]}</textarea></div><div class="col-md-6"><div class="help-block"></div></div></div>
+
+                </div>
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="col-md-1 col-md-offset-2 col-xs-6 text-right">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                    <div class="col-md-1 col-xs-6 text-left">
+                        <a class="btn btn-default" href="javascript:history.go(-1)">返回</a>
+                    </div>
+
+                </div>
+            </form>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+
+
+    </section>
+
+    <!-- /.content -->
+
+</div>
+
+<!-- Modal -->
+<!--{if $order}-->
+<div class="modal fade" id="check_out" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">退房【{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}】</h4>
+            </div>
+            <form id="smtp-form" class="form-horizontal" action="#" method="post">
+                <input type="hidden" name="form_type" value="check_out" />
+                <input type="hidden" name="id" value="{$order[id]}" />
+                <div class="modal-body">
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-8">
+                            <select class="form-control select2" multiple="multiple" disabled style="width: 100%">
+                                <!--{loop $beds $b}-->
+                                <option ${$b[order_id]?($b[order_id]==$bed[order_id]?'selected':'disabled'):($b[id]==$id?'selected':'')} value="{$b[id]}">{$b[broom]}${$forum[mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
+                                <!--{/loop}-->
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>退房日期</label>
+                        <div class="col-md-8">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker1" name="order[check_out]" value="${date('Y-m-d',time())}">
+                            </div>
+                        </div>
+                        <input type="hidden" id="datepicker2" value="{$order['check_in']}">
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">入住日期：{$order['check_in']}</div></div>
+
+                    </div>
+
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>退还押金</label><div class="col-md-8"><input type="text" class="form-control" name="order[deposit_out]" id="deposit_out" value="${$order[deposit]?$order[deposit]:'0.00'}"></div>
+
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">入住押金：{$order[deposit]}元</div></div>
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>房间费用</label><div class="col-md-8"><input type="text" class="form-control" name="order[charge]" id="charge" value=""></div>
+                        <input type="hidden" id="costroom" value="{$forum[cost_room]}">
+                        <div class="col-md-8 col-md-offset-3"><div class="help-block">费用：{$num}床位*入住天数*{$forum[cost_room]}元/天</div></div>
+
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label">其他费用</label><div class="col-md-8"><input type="text" class="form-control" name="order[income]" id="income" value=""></div>
+
+                    </div>
+                    <div class="form-group"> <div class="fee"><label class="col-md-3 text-danger control-label" >收取费用</label><div class="col-md-8"><div class="fee-block text-danger"><i class="fa fa-cny"></i>&nbsp;&nbsp;<span id="fee"></span> 元</div></div></div>
+
+                    </div>
+                    <div class="form-group"><label class="col-md-3 control-label">退房原因</label><div class="col-md-8"><input type="text" class="form-control" name="order[reason]" value=""></div></div>
+                    <div class="form-group"><label class="col-md-3 control-label">退房备注</label><div class="col-md-8"><textarea class="form-control" name="order[checkout_note]" rows="3"></textarea></div></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;"><i class="fa fa-print"></i> 打印退房单</a>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--{/if}-->
+<!-- Select2 -->
+<script src="${WEB_ROOT}/themes/plugins/select2/select2.full.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="${WEB_ROOT}/themes/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        //Date picker
+        $.fn.datepicker.dates['zh'] = {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
+            meridiem: ["上午", "下午"],
+            //suffix:      ["st", "nd", "rd", "th"],
+            today: "今天"
+        };
+        $('#datepicker').datepicker({
+            autoclose: true,
+            language: 'zh',
+            format: 'yyyy-mm-dd'
+        });
+    });
     $('#add_person').on('click', function() {
         var $id = parseInt($(this).attr('data-id'));
         $(this).attr('data-id', $id + 1);
