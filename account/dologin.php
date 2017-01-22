@@ -48,7 +48,19 @@ if ($form_type == 'login') {
         } else {
             $user = ZUser::GetLoguser($username);
             if ($user) {
-                echo 'success|' . WEB_ROOT . '/account/passwordreset?u=' . base64_encode($username);
+                $code = $user['recode'];
+                if ($code == '') {
+                    $code = md5(json_encode($user) . time());
+                    DB::Update('user', $user['user_id'], array('recode' => $code), 'user_id');
+                }
+                $user['code'] = $code;
+                $res = ZNotice::SendMail('passwordreset', $user);
+                if ($res) {
+                    showmessage('success', '', '邮件发送成功，请进入邮箱进行下一步操作！');
+                    echo 'redirect|' . WEB_ROOT . '/account/login';
+                } else {
+                    echo 'error|邮件发送失败，邮箱地址不正确！';
+                }
             } else {
                 echo 'error|用户不存在！';
             }
@@ -73,13 +85,15 @@ if ($form_type == 'login') {
                 $p = ZUser::GenPassword($password);
                 $res = DB::Update('user', $user['user_id'], array('password' => $p, 'recode' => ''), 'user_id');
                 if ($res) {
-                    echo 'success|' . WEB_ROOT . '/account/passwordreset?c=success';
+                    showmessage('success', '', '密码重置成功，请登录！');
+                    echo 'redirect|' . WEB_ROOT . '/account/login';
                 } else {
+
                     echo 'error|操作失败，请重新进行密码重置！';
                 }
             } else {
                 showmessage('error', '', '链接已经失效，请重新进行密码重置！');
-                echo 'success|' . WEB_ROOT . '/account/passwordreset';
+                echo 'redirect|' . WEB_ROOT . '/account/passwordreset';
             }
         } else {
             echo 'error|操作错误，请重新打开链接！';
