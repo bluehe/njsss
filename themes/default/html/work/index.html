@@ -17,7 +17,7 @@
                 <ul class="treeview-menu">
                     <!--{loop $court[forum] $forum}-->
                     <li>
-                        <a href="#forum_{$forum[id]}">
+                        <a href="${WEB_ROOT}/work/index#forum_{$forum[id]}">
                             <i class="fa fa-building-o"></i> {$forum[name]}
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right">${$forum[roomtype]=='train'?'培训宿舍':($forum[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>

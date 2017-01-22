@@ -51,6 +51,7 @@ if ($form_type == 'order') {
 
     //处理数据
     $order['person'] = json_encode($person);
+    $order['bid'] = implode(',', $bid);
     $bed = DB::GetTableRow('bed', array('id' => $id));
     $u = DB::GetTableRow('order', array('id' => $bed['order_id']));
 
