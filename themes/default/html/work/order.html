@@ -1,40 +1,6 @@
 <!--{include html_header_lte}-->
 
-<!-- Left side column. contains the sidebar -->
-<aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-        <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu">
-            <!--{loop $courts $court}-->
-            <li class="treeview active">
-                <a href="${WEB_ROOT}/work/index#">
-                    <i class="fa fa-building"></i> <span>{$court[name]}</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <!--{loop $court[forum] $f}-->
-                    <li>
-                        <a href="${WEB_ROOT}/work/index#forum_{$f[id]}">
-                            <i class="fa fa-building-o"></i> {$f[name]}
-                            <span class="pull-right-container">
-                                <span class="label label-primary pull-right">${$f[roomtype]=='train'?'培训宿舍':($f[roomtype]=='overtime'?'加班宿舍':'常住宿舍')}</span>
-                            </span>
-                        </a>
-                    </li>
-                    <!--{/loop}-->
-
-                </ul>
-            </li>
-            <!--{/loop}-->
-
-        </ul>
-    </section>
-    <!-- /.sidebar -->
-</aside>
+<!--{include work/sidebar}-->
 <div class="content-wrapper">
     <section class="content-header">
         <h1>{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}</h1>

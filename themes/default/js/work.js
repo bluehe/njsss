@@ -8,3 +8,18 @@ function  DateDiff(sDate1, sDate2) {    //sDate1和sDate2是2002-12-18格式
     iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24);    //把相差的毫秒数转换为天数
     return  iDays;
 }
+
+function allchk() {
+    var chknum = $(".subcheck").size(); //选项总个数
+    var chk = 0;
+    $(".subcheck").each(function() {
+        if ($(this).prop("checked")) {
+            chk++;
+        }
+    });
+    if (chknum == chk) {//全选
+        $(".selectall").prop("checked", true);
+    } else {//不全选
+        $(".selectall").prop("checked", false);
+    }
+}

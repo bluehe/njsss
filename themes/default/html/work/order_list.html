@@ -1,0 +1,85 @@
+<!--{include html_header_lte}-->
+
+<!--{include work/sidebar}-->
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>订单记录</h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">历史记录</h3>
+
+                    </div>
+
+                    <div class="box-body ">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-striped">
+                                <thead>
+                                    <tr class="info">
+                                        <th><input type="checkbox" class="selectall" /></th>
+                                        <th>部门</th>
+                                        <th>入住时间</th>
+                                        <th>床位</th>
+                                        <th>人员</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--{if $nums>0}-->
+                                    <!--{loop $orders $order}-->
+                                    <tr>
+                                        <td><input type="checkbox" class="subcheck" name="id" value="{$order[id]}" /></td>
+                                        <td>{$order[depart]}</td>
+                                        <td>{$order[check_in]}</td>
+                                        <td>
+                                            <!--{loop $order[bed] $bed}-->
+                                            {$bed[bed]}
+                                            <!--{/loop}-->
+                                        </td>
+                                        <td>X</td>
+                                    </tr>
+                                    <!--{/loop}-->
+
+                                    <!--{/if}-->
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- /.box-body -->
+
+
+                    <!-- /.box-footer-->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </section>
+
+    <!-- /.content -->
+
+</div>
+<script>
+
+    $('table').on('click', '.selectall', function() {
+
+        if ($(this).prop("checked")) {
+            $(".subcheck").prop("checked", true);
+        } else {
+            $(".subcheck").prop("checked", false);
+        }
+    });
+    $('table').on('click', '.subcheck', function() {
+        allchk();
+    });
+
+</script>
+<!--{include html_footer_lte}-->
