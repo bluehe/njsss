@@ -18,15 +18,29 @@
                     </div>
 
                     <div class="box-body ">
+
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered table-striped">
+                            <table class="table table-hover table-bordered table-striped text-center">
                                 <thead>
                                     <tr class="info">
-                                        <th><input type="checkbox" class="selectall" /></th>
+                                        <th rowspan="2"><input type="checkbox" class="selectall" /></th>
+                                        <th colspan="8">入住</th>
+                                        <th colspan="6">退房</th>
+                                    <tr class="info">
                                         <th>部门</th>
                                         <th>入住时间</th>
                                         <th>床位</th>
+                                        <th>人数</th>
                                         <th>人员</th>
+                                        <th>钥匙</th>
+                                        <th>押金</th>
+                                        <th>备注</th>
+                                        <th>退房时间</th>
+                                        <th>退还押金</th>
+                                        <th>房费</th>
+                                        <th>其他费用</th>
+                                        <th>退房原因</th>
+                                        <th>备注</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,12 +50,30 @@
                                         <td><input type="checkbox" class="subcheck" name="id" value="{$order[id]}" /></td>
                                         <td>{$order[depart]}</td>
                                         <td>{$order[check_in]}</td>
+
                                         <td>
                                             <!--{loop $order[bed] $bed}-->
-                                            {$bed[bed]}
+                                            {$forums[$bed[fid]][name]}-{$floornames[$bed[floor]]}-{$bed[broom]}-{$bed[sroom]}-{$bed[bed]}<br>
                                             <!--{/loop}-->
                                         </td>
-                                        <td>X</td>
+
+                                        <td>{$order[check_num]}</td>
+                                        <td>
+                                            <!--{loop $order[person] $person}-->
+                                            <i class="fa fa-user"></i>&nbsp;&nbsp;{$person[name]}&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i class="fa fa-phone"></i>&nbsp;&nbsp;{$person[tel]}&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i class="fa fa-credit-card"></i>&nbsp;&nbsp;{$person[idcard]}<br>
+                                            <!--{/loop}-->
+                                        </td>
+                                        <td>{$order[key_num]}</td>
+                                        <td>{$order[deposit]}</td>
+                                        <td>{$order[note]}</td>
+                                        <td>{$order[check_out]}</td>
+                                        <td>{$order[deposit_out]}</td>
+                                        <td>{$order[charge]}</td>
+                                        <td>{$order[income]}</td>
+                                        <td>{$order[reason]}</td>
+                                        <td>{$order[checkout_note]}</td>
                                     </tr>
                                     <!--{/loop}-->
 
@@ -51,6 +83,16 @@
 
                             </table>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="Pagination"></div>
+                                <div class="searchPage">
+                                    <span class="page-sum">共<strong class="allPage">{$nums}</strong>条</span>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
 
                     <!-- /.box-body -->
@@ -67,18 +109,23 @@
     <!-- /.content -->
 
 </div>
+<script type="text/javascript" src="${WEB_ROOT}/themes/default/js/jquery.pagination.js"></script>
+<script type="text/javascript">
+            $(document).ready(function() {
+    $("#Pagination").pagination({$nums}, {items_per_page: {$INI['system']['page_num']}, current_page: {$page}, link_to: "/work/order_list?by={$by}&sort={$sort}&page=__id__"});
+    });</script>
 <script>
 
-    $('table').on('click', '.selectall', function() {
+            $('table').on('click', '.selectall', function() {
 
-        if ($(this).prop("checked")) {
-            $(".subcheck").prop("checked", true);
-        } else {
-            $(".subcheck").prop("checked", false);
-        }
+    if ($(this).prop("checked")) {
+    $(".subcheck").prop("checked", true);
+    } else {
+    $(".subcheck").prop("checked", false);
+    }
     });
-    $('table').on('click', '.subcheck', function() {
-        allchk();
+            $('table').on('click', '.subcheck', function() {
+    allchk();
     });
 
 </script>

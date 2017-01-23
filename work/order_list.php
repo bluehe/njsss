@@ -9,15 +9,20 @@ $courts = DB::LimitQuery('forum', array('condition' => array('type' => 'court', 
 foreach ($courts as $key => $court) {
     $courts[$key]['forum'] = DB::LimitQuery('forum', array('condition' => array('type' => 'building', 'stat' => 1), 'order' => "order by displayorder asc"));
 }
+
+
 $by = $_REQUEST['by'] ? $_REQUEST['by'] : 'id';
-$order = $_REQUEST['order'] ? $_REQUEST['order'] : 'desc';
+$sort = $_REQUEST['sort'] ? $_REQUEST['sort'] : 'desc';
+$page = $_REQUEST['page'] ? $_REQUEST['page'] : 0;
 $condition = array();
 $nums = DB::Count('order', $condition);
-$orders = DB::LimitQuery('order', array('condition' => $condition, 'offset' => $INI['system']['page_num'] * $page, 'size' => $INI['system']['page_num'], 'order' => 'ORDER BY ' . $by . ' ' . $order . ($by == 'id' ? '' : ',id desc'),));
+$orders = DB::LimitQuery('order', array('condition' => $condition, 'offset' => $INI['system']['page_num'] * $page, 'size' => $INI['system']['page_num'], 'order' => 'ORDER BY ' . $by . ' ' . $sort . ($by == 'id' ? '' : ',id desc'),));
 
 foreach ($orders as $key => $order) {
-    $orders[$key]['bed'] = DB::LimitQuery('bed', array('condition' => array('id' => explode(',', $order['bid']), 'order' => "order by sroom asc,bed asc")));
+    $orders[$key]['bed'] = DB::LimitQuery('bed', array('condition' => array('id' => explode(',', $order['bid'])), 'order' => "order by sroom asc,bed asc"));
+    $orders[$key]['person'] = json_decode($order['person'], true);
 }
+
 //楼层
 $floornames = DB::GetDbColumn('parameter', array('k', 'v'), array('name' => 'floorname'), true);
 //楼栋
