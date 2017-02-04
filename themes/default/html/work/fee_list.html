@@ -13,7 +13,24 @@
             <div class="col-xs-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">历史记录</h3>
+                        <form class="form-horizontal" action="${WEB_ROOT}/work/fee_list" method="get">
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">统计时段</label><div class="col-md-5"><div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="check" name="check" value="{$check}">
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary">搜索</button>
+                            </div>
+                        </form>
 
                     </div>
 
@@ -71,5 +88,41 @@
     <!-- /.content -->
 
 </div>
+<!-- date-range-picker -->
+<script src="${WEB_ROOT}/themes/plugins/daterangepicker/moment.min.js"></script>
+<script src="${WEB_ROOT}/themes/plugins/daterangepicker/daterangepicker.js"></script>
+<script>
+    $(function() {
 
+        $('#check').daterangepicker({
+
+            "ranges": {
+                "今天": ["${date('Y-m-d',time())}","${date('Y-m-d',time())}"],
+                "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}","${date('Y-m-d',strtotime(\"-1 days\"))}"],
+                "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}","${date('Y-m-d',time())}"],
+                "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}","${date('Y-m-d',time())}"],
+                "本月": ["${date('Y-m-01',time())}","${date('Y-m-d',time())}"],
+                "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}","${date('Y-m-t',strtotime(\"-1 month\"))}"]
+            },
+            "locale": {
+                "format":'YYYY-MM-DD',
+                "separator": " 至 ",
+                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                "applyLabel": "确定",
+                "cancelLabel": "取消",
+                "customRangeLabel": "自定义",
+                "firstDay": 1
+            },
+            "maxDate": "${date('Y-m-d',time())}",
+            "autoApply": true,
+            "autoUpdateInput": false,
+            "linkedCalendars": false,
+            "opens": "left"
+        }, function(start, end) {
+            $('#check').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+        });
+
+    });
+</script>
 <!--{include html_footer_lte}-->

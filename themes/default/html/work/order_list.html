@@ -13,14 +13,50 @@
             <div class="col-xs-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">历史记录</h3>
+                        <form class="form-horizontal" action="${WEB_ROOT}/work/order_list" method="get">
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">入住时间</label><div class="col-md-5"><div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="checkin" name="checkin" value="{$checkin}">
+                                    </div>
+                                </div>
+
+                                <label class="col-md-1 control-label">退房时间</label><div class="col-md-5"><div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="checkout" id="checkout" value="{$checkout}"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">入住床位</label><div class="col-md-5">
+                                    <select class="form-control select2" name="bid">
+                                        <option ${''==$bid?'selected':''} value="">&nbsp;</option>
+                                        <!--{loop $beds $b}-->
+                                        <option ${$b[id]==$bid?'selected':''} value="{$b[id]}">{$forums[$b[fid]][name]}{$floornames[$b[floor]]}{$b[broom]}${$forums[$b[fid]][mold]=='mul'?'-'.$b[sroom]:''}-{$b[bed]}</option>
+                                        <!--{/loop}-->
+
+                                    </select>
+                                </div>
+                                <label class="col-md-1 control-label">入住人员</label><div class="col-md-5">
+                                    <input type="text" class="form-control" name="pe" value="{$pe}">
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary">搜索</button>
+                            </div>
+                        </form>
+
 
                     </div>
 
-                    <div class="box-body ">
-
+                    <div class="box-body">
+                        <div class="head_title"><a href="javascript:void(0);" class="excel_select"><i class="fa fa-download"></i>导出选中</a><a href="javascript:void(0);" class="excel_all"><i class="fa fa-arrow-circle-o-down"></i>全部导出</a></div>
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered table-striped text-center">
+                            <table class="table table-hover table-bordered table-striped text-center" id="a">
                                 <thead>
                                     <tr class="info">
                                         <th rowspan="2"><input type="checkbox" class="selectall" /></th>
@@ -53,7 +89,7 @@
 
                                         <td>
                                             <!--{loop $order[bed] $bed}-->
-                                            {$forums[$bed[fid]][name]}-{$floornames[$bed[floor]]}-{$bed[broom]}-{$bed[sroom]}-{$bed[bed]}<br>
+                                            {$forums[$bed[fid]][name]}{$floornames[$bed[floor]]}{$bed[broom]}${$forums[$bed[fid]][mold]=='mul'?'-'.$bed[sroom]:''}-{$bed[bed]}<br>
                                             <!--{/loop}-->
                                         </td>
 
@@ -93,6 +129,7 @@
 
                         </div>
 
+
                     </div>
 
                     <!-- /.box-body -->
@@ -109,6 +146,73 @@
     <!-- /.content -->
 
 </div>
+<!-- Select2 -->
+<script src="${WEB_ROOT}/themes/plugins/select2/select2.full.min.js"></script>
+<!-- date-range-picker -->
+<script src="${WEB_ROOT}/themes/plugins/daterangepicker/moment.min.js"></script>
+<script src="${WEB_ROOT}/themes/plugins/daterangepicker/daterangepicker.js"></script>
+<script>
+    $(function() {
+ //Initialize Select2 Elements
+        $(".select2").select2();
+        $('#checkin').daterangepicker({
+
+            "ranges": {
+                "今天": ["${date('Y-m-d',time())}","${date('Y-m-d',time())}"],
+                "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}","${date('Y-m-d',strtotime(\"-1 days\"))}"],
+                "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}","${date('Y-m-d',time())}"],
+                "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}","${date('Y-m-d',time())}"],
+                "本月": ["${date('Y-m-01',time())}","${date('Y-m-d',time())}"],
+                "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}","${date('Y-m-t',strtotime(\"-1 month\"))}"]
+            },
+            "locale": {
+                "format":'YYYY-MM-DD',
+                "separator": " 至 ",
+                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                "applyLabel": "确定",
+                "cancelLabel": "取消",
+                "customRangeLabel": "自定义",
+                "firstDay": 1
+            },
+            "maxDate": "${date('Y-m-d',time())}",
+            "autoApply": true,
+            "autoUpdateInput": false,
+            "linkedCalendars": false,
+            "opens": "left"
+        }, function(start, end) {
+            $('#checkin').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+        });
+        $('#checkout').daterangepicker({
+
+            "ranges": {
+                "今天": ["${date('Y-m-d',time())}","${date('Y-m-d',time())}"],
+                "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}","${date('Y-m-d',strtotime(\"-1 days\"))}"],
+                "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}","${date('Y-m-d',time())}"],
+                "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}","${date('Y-m-d',time())}"],
+                "本月": ["${date('Y-m-01',time())}","${date('Y-m-d',time())}"],
+                "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}","${date('Y-m-t',strtotime(\"-1 month\"))}"]
+            },
+            "locale": {
+                "format":'YYYY-MM-DD',
+                "separator": " 至 ",
+                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                "applyLabel": "确定",
+                "cancelLabel": "取消",
+                "customRangeLabel": "自定义",
+                "firstDay": 1
+            },
+            "maxDate": "${date('Y-m-d',time())}",
+            "autoApply": true,
+            "autoUpdateInput": false,
+            "linkedCalendars": false,
+            "opens": "left"
+        }, function(start, end) {
+            $('#checkout').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>
 <script type="text/javascript" src="${WEB_ROOT}/themes/default/js/jquery.pagination.js"></script>
 <script type="text/javascript">
             $(document).ready(function() {
@@ -127,6 +231,18 @@
             $('table').on('click', '.subcheck', function() {
     allchk();
     });
-
+$('.excel_all').on('click', function(){
+                loadexcel('work_order_list', "by=id&sort=desc&checkin={$checkin}&checkout={$checkout}&bid={$bid}&pe={$pe}");
+                });
+                        $('.excel_select').on('click', function(){
+                var id = $("input:checkbox[name='id']:checked").map(function(index, elem) {
+                return $(elem).val();
+                }).get().join(',');
+                        if (id){
+                loadexcel('work_order_list', "by=id&sort=desc&id=" + id); } else{
+                toastr.error("没有选中任何内容！");
+                }
+                });
 </script>
+
 <!--{include html_footer_lte}-->

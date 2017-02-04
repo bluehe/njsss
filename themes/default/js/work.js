@@ -23,3 +23,10 @@ function allchk() {
         $(".selectall").prop("checked", false);
     }
 }
+
+function loadexcel(id, s, r) {
+    r = r ? r : 0;
+    location.href = WEB_ROOT + '/work/doexcel?r=' + r + '&t=' + id + '&' + s;
+
+    //window.open(WEB_ROOT + '/home/doexcel?t=' + id + '&' + s);
+}

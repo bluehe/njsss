@@ -3,7 +3,7 @@
 <!--{include work/sidebar}-->
 <div class="content-wrapper">
     <section class="content-header">
-        <h1>{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}</h1>
+        <h1>{$court[name]}{$forum[name]}{$floornames[$bed[floor]]}</h1>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>钥匙数量</label><div class="col-md-4"><input type="text" class="form-control" name="order[key_num]" value="${$order[key_num]?$order[key_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
-                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order?'disabled':''}></div><div class="col-md-6"><div class="help-block">${$order?'<a href="javascript:;"><i class="fa fa-print"></i> 打印押金单</a>':'入住后不能修改'}</div></div></div>
+                    <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住押金</label><div class="col-md-4"><input type="text" class="form-control" name="order[deposit]" value="${$order[deposit]?$order[deposit]:'0.00'}" ${$order?'disabled':''}></div><div class="col-md-6"><div class="help-block">${$order?'<a href="print?type=deposit&id='.$order[id].'" data-toggle="modal" data-target="#printdeposit"><i class="fa fa-print"></i> 打印押金单</a>':'入住后不能修改'}</div></div></div>
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住日期</label>
                         <div class="col-md-4">
                             <div class="input-group date">
@@ -100,18 +100,19 @@
 </div>
 
 <!-- Modal -->
+
 <!--{if $order}-->
 <div class="modal fade" id="check_out" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
-                <h4 class="modal-title">退房【{$court[name]}-{$forum[name]}-{$floornames[$bed[floor]]}】</h4>
+                <h4 class="modal-title">退房【{$court[name]}{$forum[name]}{$floornames[$bed[floor]]}】</h4>
             </div>
             <form id="smtp-form" class="form-horizontal" action="#" method="post">
                 <input type="hidden" name="form_type" value="check_out" />
                 <input type="hidden" name="id" value="{$order[id]}" />
-                <div class="modal-body">
+                <div class="modal-body" id="print1">
                     <div class="form-group"><label class="col-md-3 control-label"><span class="redfont">*</span>入住床位</label><div class="col-md-8">
                             <select class="form-control select2" multiple="multiple" disabled style="width: 100%">
                                 <!--{loop $beds $b}-->
@@ -156,7 +157,7 @@
                     <div class="form-group"><label class="col-md-3 control-label">退房备注</label><div class="col-md-8"><textarea class="form-control" name="order[checkout_note]" rows="3"></textarea></div></div>
                 </div>
                 <div class="modal-footer">
-                    <a href="javascript:;"><i class="fa fa-print"></i> 打印退房单</a>
+
                     <button type="submit" class="btn btn-primary">确定</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
@@ -165,6 +166,15 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="false" id="printdeposit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
 <!--{/if}-->
 <!-- Select2 -->
 <script src="${WEB_ROOT}/themes/plugins/select2/select2.full.min.js"></script>
