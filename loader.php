@@ -5,7 +5,6 @@
  * @author blue
  */
 require_once(dirname(__FILE__) . '/system/confsystem.php');
-
 /* process currefer */
 //$currefer = uencode(strval($_SERVER['REQUEST_URI']));
 /* session,cache,configure,webroot register */
