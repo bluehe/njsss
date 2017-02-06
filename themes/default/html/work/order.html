@@ -57,6 +57,17 @@
                         </div>
                         <div class="col-md-6"><div class="help-block"></div></div>
                     </div>
+                    <div class="form-group"><label class="col-md-2 control-label">预定退房</label>
+                        <div class="col-md-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="datepicker_l" name="order[check_leave]" value="${$order['check_leave']?date('Y-m-d',$order['check_leave']):''}">
+                            </div>
+                        </div>
+                        <div class="col-md-6"><div class="help-block"></div></div>
+                    </div>
                     <div class="form-group"><label class="col-md-2 control-label">单位部门</label><div class="col-md-4"><input type="text" class="form-control" name="order[depart]" value="{$order[depart]}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
                     <div class="form-group"><label class="col-md-2 control-label"><span class="redfont">*</span>入住人数</label><div class="col-md-4"><input type="text" class="form-control" name="order[check_num]" value="${$order[check_num]?$order[check_num]:'1'}"></div><div class="col-md-6"><div class="help-block"></div></div></div>
                     <div id="person">
@@ -72,7 +83,7 @@
 
 
                     </div>
-                    <div class="form-group"><div class="col-md-6 text-center"><a style="cursor:pointer" id="add_person" data-id="${count($persons)}"><i class="fa fa-plus"></i>  添加人员</a></div><div class="col-md-6"><div class="help-block"></div></div></div>
+                    <!--                    <div class="form-group"><div class="col-md-6 text-center"><a style="cursor:pointer" id="add_person" data-id="${count($persons)}"><i class="fa fa-plus"></i>  添加人员</a></div><div class="col-md-6"><div class="help-block"></div></div></div>-->
                     <div class="form-group"><label class="col-md-2 control-label">备注</label><div class="col-md-4"><textarea class="form-control" name="order[note]" rows="3">{$order[note]}</textarea></div><div class="col-md-6"><div class="help-block"></div></div></div>
 
                 </div>
@@ -197,6 +208,11 @@
             today: "今天"
         };
         $('#datepicker').datepicker({
+            autoclose: true,
+            language: 'zh',
+            format: 'yyyy-mm-dd'
+        });
+        $('#datepicker_l').datepicker({
             autoclose: true,
             language: 'zh',
             format: 'yyyy-mm-dd'

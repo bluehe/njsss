@@ -19,6 +19,7 @@ $checkin = $_REQUEST['checkin'];
 $checkout = $_REQUEST['checkout'];
 $bid = $_REQUEST['bid'];
 $pe = $_REQUEST['pe'];
+$depart = $_REQUEST['depart'];
 $condition = array();
 if ($checkin) {
     $in = explode(' ', $checkin);
@@ -33,6 +34,9 @@ if ($bid) {
 }
 if ($pe) {
     $condition[] = "person LIKE '%{$pe}%'";
+}
+if ($depart) {
+    $condition[] = "depart LIKE '%{$depart}%'";
 }
 $nums = DB::Count('order', $condition);
 $orders = DB::LimitQuery('order', array('condition' => $condition, 'offset' => $INI['system']['page_num'] * $page, 'size' => $INI['system']['page_num'], 'order' => 'ORDER BY ' . $by . ' ' . $sort . ($by == 'id' ? '' : ',id desc'),));

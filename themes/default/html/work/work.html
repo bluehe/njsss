@@ -44,7 +44,7 @@
                         <div class="col-md-1 col-xs-3 clearspace text-center">
                             <!--{if $broom[stat]==1}-->
                             <div class="sroom ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
-                                <h4 class="text_ellipsis">{$broom[broom]}</h4>
+                                <h4 class="text_ellipsis">{$broom[broom]}${isset($broom[leave])?'<span class="label label-default" style="padding:0px 3px"><i class="fa fa-hourglass-end"></i>'.$broom[leave].'</span>':''}</h4>
                                 <i class="fa">{$broom[check_bed]}/{$broom[bed_num]}</i>
                             </div>
                             <div class="dropdown-menu">
@@ -66,19 +66,19 @@
                         <!--{else}-->
                         <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
                             <div class="broom row clearspace text-center ">
-                                <h4 class="text_ellipsis col-xs-12 ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):($broom[stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
+                                <h4 class="text_ellipsis col-xs-12 ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):($broom[stat]==1?'':'label-primary')}">{$broom[broom]}${isset($broom[leave])?'<span class="label label-default" style="padding:0px 3px"><i class="fa fa-hourglass-end"></i>'.$broom[leave].'</span>':''}</h4>
                                 <!--{loop $broom[sroom] $sroom}-->
                                 <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
                                     <div class="sroom ${$sroom[check_bed]>0?($sroom[check_bed]==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[stat]==1?'':'label-primary')}">
                                         <!--{if $sroom[stat]==1}-->
                                         <div data-toggle="dropdown">
-                                            <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
+                                            <h4 class="text_ellipsis">{$sroom[sroom]}${isset($sroom[leave])?'<span class="label label-default" style="padding:0px 3px"><i class="fa fa-hourglass-end"></i>'.$sroom[leave].'</span>':''}</h4>
                                             <i class="fa">{$sroom[check_bed]}/{$sroom[bed_num]}</i>
                                         </div>
                                         <div class="dropdown-menu">
                                             <!--{loop $sroom[bed] $bed}-->
                                             <!--{if $bed[stat]==1}-->
-                                            <a href="/work/order?id={$bed[id]}"><div class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}</div></a>
+                                            <a href="/work/order?id={$bed[id]}"><div class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}${array_key_exists($bed[order_id], $leave_orders)?'<i class="fa fa-hourglass-end"></i>':''}</div></a>
                                             <!--{else}-->
                                             <div class="bed label-primary">{$bed[note]}</div>
                                             <!--{/if}-->

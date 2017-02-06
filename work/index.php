@@ -10,6 +10,6 @@ if (checkperm('work', false)) {
 } elseif (checkperm('fee_list', false)) {
     Utility::Redirect('fee_list');
 } else {
-    Utility::Redirect('home/index');
+    Utility::Redirect('/home/index');
 }
 ?>

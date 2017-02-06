@@ -18,6 +18,7 @@ if ($t == 'work_order_list') {
         $checkout = $_REQUEST['checkout'];
         $bid = $_REQUEST['bid'];
         $pe = $_REQUEST['pe'];
+        $depart = $_REQUEST['depart'];
         if ($checkin) {
             $in = explode(' ', $checkin);
             $condition[] = "check_in>= '$in[0]' and check_in<= '$in[2]'";
@@ -32,6 +33,9 @@ if ($t == 'work_order_list') {
         if ($pe) {
             $condition[] = "person LIKE '%{$pe}%'";
         }
+        if ($depart) {
+            $condition[] = "depart LIKE '%{$depart}%'";
+        }
     }
     $nums = DB::Count('order', $condition);
     $data = DB::LimitQuery('order', array('condition' => $condition, 'order' => 'ORDER BY ' . $by . ' ' . $sort . ($by == 'id' ? '' : ',id desc'),));
@@ -45,6 +49,7 @@ if ($t == 'work_order_list') {
                 array('value' => 'per', 'name' => '人员', 'width' => 56, 'style' => array('br' => true)),
                 array('value' => 'key_num', 'name' => '钥匙', 'width' => 6),
                 array('value' => 'deposit', 'name' => '押金', 'width' => 10),
+                array('value' => 'check_leave', 'name' => '预定退房', 'width' => 12),
                 array('value' => 'note', 'name' => '入住备注', 'width' => 15, 'style' => array('br' => true)),
                 array('value' => 'check_out', 'name' => '退房时间', 'width' => 12),
                 array('value' => 'deposit_out', 'name' => '退还押金', 'width' => 10),
@@ -79,6 +84,9 @@ if ($t == 'work_order_list') {
             }
             if (count($persons) > count($beds)) {
                 $data[$key]['row_height'] = 15 * count($persons);
+            }
+            if ($one['check_leave']) {
+                $data[$key]['check_leave'] = date('Y-m-d', $one['check_leave']);
             }
         }
 

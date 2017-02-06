@@ -5,6 +5,9 @@ need_login();
 checkperm('work');
 $nav = array('title' => '首页');
 
+//预订退房
+$leave_orders = DB::GetDbColumn('order', array('id', 'check_leave'), array('check_leave>0', 'checkout_time is null'), true);
+
 //获得楼苑信息
 $courts = DB::LimitQuery('forum', array('condition' => array('type' => 'court', 'stat' => 1), 'order' => "order by displayorder asc,id asc"));
 foreach ($courts as $key => $court) {
@@ -30,12 +33,24 @@ foreach ($courts as $key => $court) {
                 //大室入住数
                 $brooms[$i]['check_bed'] = DB::count('bed', array('fid' => $forum['id'], 'floor' => $floor[floor], 'broom' => $broom[broom], 'stat' => 1, "order_id>0"));
 
+
+
                 $brooms[$i]['bed'] = DB::LimitQuery('bed', array('condition' => array('fid' => $forum['id'], 'floor' => $floor[floor], 'broom' => $broom[broom]), 'select' => "id,bed,stat,note,order_id", 'order' => "order by sroom asc,bed asc"));
                 $brooms[$i]['stat'] = 0;
                 foreach ($brooms[$i]['bed'] as $b) {
                     if ($b['stat'] == 1) {
                         $brooms[$i]['stat'] = 1;
                         break;
+                    }
+                }
+                foreach ($brooms[$i]['bed'] as $b) {
+                    if (array_key_exists($b['order_id'], $leave_orders)) {
+                        if (isset($brooms[$i]['leave'])) {
+                            $a = ceil(($leave_orders[$b['order_id']] - time()) / 3600 / 24);
+                            $brooms[$i]['leave'] = $brooms[$i]['leave'] > $a ? $a : $brooms[$i]['leave'];
+                        } else {
+                            $brooms[$i]['leave'] = ceil(($leave_orders[$b['order_id']] - time()) / 3600 / 24);
+                        }
                     }
                 }
                 if ($forum['mold'] == 'mul') {
@@ -53,6 +68,16 @@ foreach ($courts as $key => $court) {
                             if ($s['stat'] == 1) {
                                 $brooms[$i]['sroom'][$j]['stat'] = 1;
                                 break;
+                            }
+                        }
+                        foreach ($brooms[$i]['sroom'][$j]['bed'] as $s) {
+                            if (array_key_exists($s['order_id'], $leave_orders)) {
+                                if (isset($brooms[$i]['sroom'][$j]['leave'])) {
+                                    $a = ceil(($leave_orders[$s['order_id']] - time()) / 3600 / 24);
+                                    $brooms[$i]['sroom'][$j]['leave'] = $brooms[$i]['sroom'][$j]['leave'] > $a ? $a : $brooms[$i]['sroom'][$j]['leave'];
+                                } else {
+                                    $brooms[$i]['sroom'][$j]['leave'] = ceil(($leave_orders[$s['order_id']] - time()) / 3600 / 24);
+                                }
                             }
                         }
                     }

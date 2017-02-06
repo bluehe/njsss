@@ -46,6 +46,11 @@
                                     <input type="text" class="form-control" name="pe" value="{$pe}">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">入住部门</label><div class="col-md-5">
+                                    <input type="text" class="form-control" name="depart" value="{$depart}">
+                                </div>
+                            </div>
                             <div class="col-md-12 text-center">
                                 <button type="submit" class="btn btn-primary">搜索</button>
                             </div>
@@ -66,11 +71,13 @@
                                     <tr class="info">
                                         <th>部门</th>
                                         <th>入住时间</th>
+
                                         <th>床位</th>
                                         <th>人数</th>
                                         <th>人员</th>
                                         <th>钥匙</th>
                                         <th>押金</th>
+                                        <th>预定退房</th>
                                         <th>备注</th>
                                         <th>退房时间</th>
                                         <th>退还押金</th>
@@ -104,6 +111,7 @@
                                         </td>
                                         <td>{$order[key_num]}</td>
                                         <td>{$order[deposit]}</td>
+                                        <td>${$order[check_leave]?date('Y-m-d',$order[check_leave]):''}</td>
                                         <td>{$order[note]}</td>
                                         <td>{$order[check_out]}</td>
                                         <td>{$order[deposit_out]}</td>
@@ -153,69 +161,68 @@
 <script src="${WEB_ROOT}/themes/plugins/daterangepicker/moment.min.js"></script>
 <script src="${WEB_ROOT}/themes/plugins/daterangepicker/daterangepicker.js"></script>
 <script>
-    $(function() {
- //Initialize Select2 Elements
-        $(".select2").select2();
-        $('#checkin').daterangepicker({
+            $(function() {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+                    $('#checkin').daterangepicker({
 
             "ranges": {
-                "今天": ["${date('Y-m-d',time())}","${date('Y-m-d',time())}"],
-                "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}","${date('Y-m-d',strtotime(\"-1 days\"))}"],
-                "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}","${date('Y-m-d',time())}"],
-                "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}","${date('Y-m-d',time())}"],
-                "本月": ["${date('Y-m-01',time())}","${date('Y-m-d',time())}"],
-                "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}","${date('Y-m-t',strtotime(\"-1 month\"))}"]
+            "今天": ["${date('Y-m-d',time())}", "${date('Y-m-d',time())}"],
+                    "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}", "${date('Y-m-d',strtotime(\"-1 days\"))}"],
+                    "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}", "${date('Y-m-d',time())}"],
+                    "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}", "${date('Y-m-d',time())}"],
+                    "本月": ["${date('Y-m-01',time())}", "${date('Y-m-d',time())}"],
+                    "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}", "${date('Y-m-t',strtotime(\"-1 month\"))}"]
             },
-            "locale": {
-                "format":'YYYY-MM-DD',
-                "separator": " 至 ",
-                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                "applyLabel": "确定",
-                "cancelLabel": "取消",
-                "customRangeLabel": "自定义",
-                "firstDay": 1
-            },
-            "maxDate": "${date('Y-m-d',time())}",
-            "autoApply": true,
-            "autoUpdateInput": false,
-            "linkedCalendars": false,
-            "opens": "right"
+                    "locale": {
+                    "format":'YYYY-MM-DD',
+                            "separator": " 至 ",
+                            "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                            "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                            "applyLabel": "确定",
+                            "cancelLabel": "取消",
+                            "customRangeLabel": "自定义",
+                            "firstDay": 1
+                    },
+                    "maxDate": "${date('Y-m-d',time())}",
+                    "autoApply": true,
+                    "autoUpdateInput": false,
+                    "linkedCalendars": false,
+                    "opens": "right"
 
-        }, function(start, end) {
+            }, function(start, end) {
             $('#checkin').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
-        });
-        $('#checkout').daterangepicker({
+            });
+                    $('#checkout').daterangepicker({
 
             "ranges": {
-                "今天": ["${date('Y-m-d',time())}","${date('Y-m-d',time())}"],
-                "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}","${date('Y-m-d',strtotime(\"-1 days\"))}"],
-                "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}","${date('Y-m-d',time())}"],
-                "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}","${date('Y-m-d',time())}"],
-                "本月": ["${date('Y-m-01',time())}","${date('Y-m-d',time())}"],
-                "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}","${date('Y-m-t',strtotime(\"-1 month\"))}"]
+            "今天": ["${date('Y-m-d',time())}", "${date('Y-m-d',time())}"],
+                    "昨天": ["${date('Y-m-d',strtotime(\"-1 days\"))}", "${date('Y-m-d',strtotime(\"-1 days\"))}"],
+                    "最近7天": ["${date('Y-m-d',strtotime(\"-7 days\"))}", "${date('Y-m-d',time())}"],
+                    "最近30天": ["${date('Y-m-d',strtotime(\"-30 days\"))}", "${date('Y-m-d',time())}"],
+                    "本月": ["${date('Y-m-01',time())}", "${date('Y-m-d',time())}"],
+                    "上个月": ["${date('Y-m-01',strtotime(\"-1 month\"))}", "${date('Y-m-t',strtotime(\"-1 month\"))}"]
             },
-            "locale": {
-                "format":'YYYY-MM-DD',
-                "separator": " 至 ",
-                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                "applyLabel": "确定",
-                "cancelLabel": "取消",
-                "customRangeLabel": "自定义",
-                "firstDay": 1
-            },
-            "maxDate": "${date('Y-m-d',time())}",
-            "autoApply": true,
-            "autoUpdateInput": false,
-            "linkedCalendars": false,
-            "opens": "right"
+                    "locale": {
+                    "format":'YYYY-MM-DD',
+                            "separator": " 至 ",
+                            "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                            "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                            "applyLabel": "确定",
+                            "cancelLabel": "取消",
+                            "customRangeLabel": "自定义",
+                            "firstDay": 1
+                    },
+                    "maxDate": "${date('Y-m-d',time())}",
+                    "autoApply": true,
+                    "autoUpdateInput": false,
+                    "linkedCalendars": false,
+                    "opens": "right"
 
-        }, function(start, end) {
+            }, function(start, end) {
             $('#checkout').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
-        });
-    });
-</script>
+            });
+            });</script>
 <script type="text/javascript" src="${WEB_ROOT}/themes/default/js/jquery.pagination.js"></script>
 <script type="text/javascript">
             $(document).ready(function() {
@@ -234,18 +241,18 @@
             $('table').on('click', '.subcheck', function() {
     allchk();
     });
-$('.excel_all').on('click', function(){
-                loadexcel('work_order_list', "by=id&sort=desc&checkin={$checkin}&checkout={$checkout}&bid={$bid}&pe={$pe}");
-                });
-                        $('.excel_select').on('click', function(){
-                var id = $("input:checkbox[name='id']:checked").map(function(index, elem) {
-                return $(elem).val();
-                }).get().join(',');
-                        if (id){
-                loadexcel('work_order_list', "by=id&sort=desc&id=" + id); } else{
-                toastr.error("没有选中任何内容！");
-                }
-                });
+            $('.excel_all').on('click', function(){
+    loadexcel('work_order_list', "by=id&sort=desc&checkin={$checkin}&checkout={$checkout}&bid={$bid}&pe={$pe}&depart={$depart}");
+    });
+            $('.excel_select').on('click', function(){
+    var id = $("input:checkbox[name='id']:checked").map(function(index, elem) {
+    return $(elem).val();
+    }).get().join(',');
+            if (id){
+    loadexcel('work_order_list', "by=id&sort=desc&id=" + id); } else{
+    toastr.error("没有选中任何内容！");
+    }
+    });
 </script>
 
 <!--{include html_footer_lte}-->
