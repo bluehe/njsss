@@ -123,7 +123,7 @@ if ($form_type == 'order') {
         if ($result) {
 
             showmessage('success', '', '退房成功！');
-            echo 'redirect^$^' . WEB_ROOT . '/work/index';
+            echo 'redirect^$^' . WEB_ROOT . '/work/work';
         } else {
 
             echo 'error^$^退房失败！';

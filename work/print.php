@@ -2,7 +2,7 @@
 
 require_once(dirname(dirname(__FILE__)) . '/loader.php');
 need_login();
-
+checkperm('order');
 $type = $_REQUEST['type'];
 if ($type == 'deposit') {
     $id = $_REQUEST['id'];

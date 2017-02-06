@@ -2,7 +2,7 @@
 
 require_once(dirname(dirname(__FILE__)) . '/loader.php');
 need_login();
-
+checkperm('fee_list');
 $nav = array('title' => '费用统计', 'nav1' => 'work', 'nav2' => 'fee_list');
 //获得楼苑信息
 $courts = DB::LimitQuery('forum', array('condition' => array('type' => 'court', 'stat' => 1), 'order' => "order by displayorder asc,id asc"));

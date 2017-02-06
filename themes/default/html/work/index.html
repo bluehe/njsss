@@ -1,118 +1,40 @@
 <!--{include html_header_lte}-->
-<!--{include work/sidebar}-->
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!--{loop $courts $court}-->
-    <!-- Content Header (Page header) -->
-    <section class="content-header" id="court_{$court[id]}">
-        <h1>{$court[name]}</h1>
-    </section>
 
+<!--{include work/sidebar}-->
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>订单记录</h1>
+    </section>
     <!-- Main content -->
     <section class="content">
-        <!--{loop $court[forum] $forum}-->
+
         <!-- Default box -->
-        <a class="target-fix" name="forum_{$forum[id]}"></a>
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">{$forum[name]}</h3>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
 
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="收缩">
-                        <i class="fa fa-minus"></i></button>
-                </div>
-                <div style="line-height: 24px;">
-                    <!--{if $forum[mold]=='sig'}-->
-                    <span class="label label-primary">房间数：{$forum[total_broom]}</span>
-                    <!--{else}-->
-                    <span class="label label-primary">套间数：{$forum[total_broom]}</span>
-                    <span class="label label-primary">小室数：{$forum[total_sroom]}</span>
-                    <!--{/if}-->
-                    <span class="label label-success">可用床位：{$forum[total_bed]}</span>
-                    <span class="label label-warning">入住床位：{$forum[check_bed]}</span>
-                    <span class="label label-default"><i class="fa fa-bar-chart"></i>入住率：${number_format($forum[check_bed]/$forum[total_bed]*100,2)}%</span>
-                </div>
-            </div>
 
-            <div class="box-body ">
-                <!--{loop $forum[f] $index $brooms}-->
-                <div class="floor">
-                    <div class="col-md-1 col-xs-2 text-center clearspace">{$floornames[$index]}</div>
-                    <div class="col-md-11 col-xs-10">
-                        <!--{loop $brooms $broom}-->
-                        <!--{if $forum[mold]=='sig'}-->
-                        <div class="col-md-1 col-xs-3 clearspace text-center">
-                            <!--{if $broom[stat]==1}-->
-                            <div class="sroom ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):''}" data-toggle="dropdown">
-                                <h4 class="text_ellipsis">{$broom[broom]}</h4>
-                                <i class="fa">{$broom[check_bed]}/{$broom[bed_num]}</i>
-                            </div>
-                            <div class="dropdown-menu">
-                                <!--{loop $broom[bed] $bed}-->
-                                <!--{if $bed[stat]==1}-->
-                                <a href="/work/order?id={$bed[id]}"><div class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}</div></a>
-                                <!--{else}-->
-                                <div class="bed label-primary">{$bed[note]}</div>
-                                <!--{/if}-->
-                                <!--{/loop}-->
-                            </div>
-                            <!--{else}-->
-                            <div class="sroom label-primary">
-                                <h4 class="text_ellipsis">{$broom[broom]}</h4>
-                                <i class="fa">{$broom[bed][0][note]}</i>
-                            </div>
-                            <!--{/if}-->
-                        </div>
-                        <!--{else}-->
-                        <div class="col-md-${count($broom[sroom])} col-xs-${count($broom[sroom])*3} clearspace">
-                            <div class="broom row clearspace text-center ">
-                                <h4 class="text_ellipsis col-xs-12 ${$broom[check_bed]>0?($broom[check_bed]==$broom[bed_num]?'label-danger':'label-warning'):($broom[stat]==1?'':'label-primary')}">{$broom[broom]}</h4>
-                                <!--{loop $broom[sroom] $sroom}-->
-                                <div class="col-xs-${12/count($broom[sroom])} clearspace text-center">
-                                    <div class="sroom ${$sroom[check_bed]>0?($sroom[check_bed]==$sroom[bed_num]?'label-danger':'label-warning'):($sroom[stat]==1?'':'label-primary')}">
-                                        <!--{if $sroom[stat]==1}-->
-                                        <div data-toggle="dropdown">
-                                            <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
-                                            <i class="fa">{$sroom[check_bed]}/{$sroom[bed_num]}</i>
-                                        </div>
-                                        <div class="dropdown-menu">
-                                            <!--{loop $sroom[bed] $bed}-->
-                                            <!--{if $bed[stat]==1}-->
-                                            <a href="/work/order?id={$bed[id]}"><div class="bed ${$bed[order_id]>0?'label-danger':'label-success'}">{$bed[bed]}</div></a>
-                                            <!--{else}-->
-                                            <div class="bed label-primary">{$bed[note]}</div>
-                                            <!--{/if}-->
-                                            <!--{/loop}-->
-                                        </div>
-                                        <!--{else}-->
-                                        <div>
-                                            <h4 class="text_ellipsis">{$sroom[sroom]}</h4>
-                                            <i class="fa">{$sroom[bed][0][note]}</i>
-                                        </div>
-                                        <!--{/if}-->
-                                    </div>
-                                </div>
-                                <!--{/loop}-->
+                    <div class="box-body">
 
-                            </div>
-                        </div>
-                        <!--{/if}-->
-                        <!--{/loop}-->
+
+
+
                     </div>
-                </div>
-                <!--{/loop}-->
-            </div>
-            <!-- /.box-body -->
 
-            <!-- /.box-footer-->
+                    <!-- /.box-body -->
+
+
+                    <!-- /.box-footer-->
+                </div>
+                <!-- /.box -->
+            </div>
         </div>
-        <!-- /.box -->
-        <!--{/loop}-->
 
     </section>
 
     <!-- /.content -->
-    <!--{/loop}-->
+
 </div>
-<!-- /.content-wrapper -->
+
+
 <!--{include html_footer_lte}-->

@@ -22,16 +22,6 @@
                                         <input type="text" class="form-control pull-right" id="checkin" name="checkin" value="{$checkin}">
                                     </div>
                                 </div>
-
-                                <label class="col-md-1 control-label">退房时间</label><div class="col-md-5"><div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" class="form-control" name="checkout" id="checkout" value="{$checkout}"></div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-md-1 control-label">入住床位</label><div class="col-md-5">
                                     <select class="form-control select2" name="bid">
                                         <option ${''==$bid?'selected':''} value="">&nbsp;</option>
@@ -40,6 +30,17 @@
                                         <!--{/loop}-->
 
                                     </select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-md-1 control-label">退房时间</label><div class="col-md-5"><div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="checkout" id="checkout" value="{$checkout}"></div>
                                 </div>
                                 <label class="col-md-1 control-label">入住人员</label><div class="col-md-5">
                                     <input type="text" class="form-control" name="pe" value="{$pe}">
@@ -179,7 +180,8 @@
             "autoApply": true,
             "autoUpdateInput": false,
             "linkedCalendars": false,
-            "opens": "left"
+            "opens": "right"
+
         }, function(start, end) {
             $('#checkin').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
         });
@@ -207,7 +209,8 @@
             "autoApply": true,
             "autoUpdateInput": false,
             "linkedCalendars": false,
-            "opens": "left"
+            "opens": "right"
+
         }, function(start, end) {
             $('#checkout').val(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
         });
