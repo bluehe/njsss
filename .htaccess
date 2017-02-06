@@ -2,6 +2,8 @@
         Options +FollowSymlinks
 	RewriteEngine On
 	RewriteBase /
+        RewriteCond %{HTTP_HOST} ^bnlcl.com [NC]
+        RewriteRule ^(.*)$ http://www.bnlcl.com/$1 [L,R=301]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.*)(\??.*)$ $1.php$2 [PT,L]
